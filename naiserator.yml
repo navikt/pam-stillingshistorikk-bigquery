@@ -35,7 +35,7 @@ spec:
     pool: {{ kafka_pool }}
   gcp:
     bigQueryDatasets:
-      - name: stilling-historikk-bq
+      - name: stilling_historikk_bq
         permission: READWRITE
   env:
     - name: ADLISTENER_GROUP_ID
