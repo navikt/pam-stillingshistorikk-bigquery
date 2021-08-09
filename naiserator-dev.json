@@ -1,5 +1,4 @@
 {
-  "elasticsearch_url": "http://stillinger-opendistro-elasticsearch:9200",
   "adlistener_group_id": "stihibi_20210809",
   "adlistener_topic": "teampam.stilling-intern-1",
   "kafka_pool": "nav-dev"
