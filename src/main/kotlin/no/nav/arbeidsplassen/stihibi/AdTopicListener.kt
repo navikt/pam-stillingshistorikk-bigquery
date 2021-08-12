@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 @KafkaListener(clientId = AD_LISTENER_CLIENT_ID, groupId = "\${adlistener.group-id:pam-stihibi}", threads = 1, offsetReset = OffsetReset.EARLIEST,
         batch = true, offsetStrategy = OffsetStrategy.SYNC)
 @Requires(property = "adlistener.enabled", value = "true")
-class AdTopicListener() {
+class AdTopicListener(private val bigQueryService: BigQueryService) {
 
     companion object {
         private val LOG = LoggerFactory.getLogger(AdTopicListener::class.java)
@@ -18,13 +18,18 @@ class AdTopicListener() {
 
 
     @Topic("\${adlistener.topic:StillingIntern}")
-    fun receive(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>) {
+    fun receive(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>, topic: String) {
         LOG.info("Received batch with {} ads", ads.size)
         if (ads.isNotEmpty()) {
-            LOG.info("push to bigquery here")
+            if (ads.size!=offsets.size || ads.size!=partitions.size)
+                LOG.error("Something is not correct, size should be the same")
+            val response = bigQueryService.sendBatch(ads, offsets, partitions, topic)
+            if (response.hasError) {
+                LOG.error("We got error while inserting to bigquery, rows failed {}", response.rowsError)
+                throw Exception("Rows inserts failed!")
+            }
         }
      }
-
 }
 
 const val AD_LISTENER_CLIENT_ID="pam-stihibi-ad-topic-listener"

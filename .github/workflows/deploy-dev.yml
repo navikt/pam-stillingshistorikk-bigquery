@@ -7,7 +7,7 @@ on:
       - "LICENCE"
       - "CODEOWNERS"
     branches:
-      - main
+      - disabled
 jobs:
   security:
     runs-on: ubuntu-latest

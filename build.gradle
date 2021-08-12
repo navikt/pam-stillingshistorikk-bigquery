@@ -49,6 +49,9 @@ dependencies {
     implementation "io.micronaut.micrometer:micronaut-micrometer-registry-prometheus:$micronautMicrometerVersion"
     implementation "io.micronaut:micronaut-management:$micronautVersion"
     kapt platform("io.micronaut:micronaut-bom:$micronautVersion")
+    implementation platform("com.google.cloud:libraries-bom:20.9.0")
+    implementation "com.google.cloud:google-cloud-bigquery"
+    implementation "com.google.cloud:google-cloud-bigquerystorage"
 }
 
 test.classpath += configurations.developmentOnly
