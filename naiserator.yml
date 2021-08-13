@@ -35,11 +35,11 @@ spec:
     pool: {{ kafka_pool }}
   filesFrom:
     - secret: pam-stihibi-credentials
-      mountPath: /var/run/secrets/credentials/pam-stihibi.json
+      mountPath: /var/run/secrets/credentials/pam-stihibi
   env:
     - name: ADLISTENER_GROUP_ID
       value: "{{ adlistener_group_id }}"
     - name: ADLISTENER_TOPIC
       value: "{{ adlistener_topic }}"
     - name: GOOGLE_APPLICATION_CREDENTIALS
-      value: "/var/run/secrets/credentials/pam-stihibi.json"
+      value: "/var/run/secrets/credentials/pam-stihibi/secret"
