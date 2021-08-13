@@ -18,12 +18,12 @@ class AdTopicListener(private val bigQueryService: BigQueryService) {
 
 
     @Topic("\${adlistener.topic:StillingIntern}")
-    fun receive(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>, topic: String) {
+    fun receive(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>, topic: List<String>) {
         LOG.info("Received batch with {} ads", ads.size)
+        LOG.info("Topic is {}", topic[0])
         if (ads.isNotEmpty()) {
             if (ads.size!=offsets.size || ads.size!=partitions.size)
                 LOG.error("Something is not correct, size should be the same")
-
             val response = bigQueryService.sendBatch(ads, offsets, partitions, "teampam.stilling-intern-1")
             if (response.hasError) {
                 LOG.error("We got error while inserting to bigquery, rows failed {}", response.rowsError)
