@@ -35,7 +35,7 @@ spec:
     pool: {{ kafka_pool }}
   filesFrom:
     - secret: pam-stihibi-credentials
-      mountpath: /var/run/secrets/credentials/pam-stihibi.json
+      mountPath: /var/run/secrets/credentials/pam-stihibi.json
   env:
     - name: ADLISTENER_GROUP_ID
       value: "{{ adlistener_group_id }}"
