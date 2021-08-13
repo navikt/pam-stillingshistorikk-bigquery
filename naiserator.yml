@@ -33,12 +33,13 @@ spec:
     path: /prometheus
   kafka:
     pool: {{ kafka_pool }}
-  gcp:
-    bigQueryDatasets:
-      - name: stilling_historikk_bq
-        permission: READWRITE
+  filesFrom:
+    - secret: pam-stihibi-credentials
+      mountpath: /var/run/secrets/credentials/pam-stihibi.json
   env:
     - name: ADLISTENER_GROUP_ID
       value: "{{ adlistener_group_id }}"
     - name: ADLISTENER_TOPIC
       value: "{{ adlistener_topic }}"
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: "/var/run/secrets/credentials/pam-stihibi.json"
