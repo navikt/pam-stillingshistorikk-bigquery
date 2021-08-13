@@ -23,7 +23,8 @@ class AdTopicListener(private val bigQueryService: BigQueryService) {
         if (ads.isNotEmpty()) {
             if (ads.size!=offsets.size || ads.size!=partitions.size)
                 LOG.error("Something is not correct, size should be the same")
-            val response = bigQueryService.sendBatch(ads, offsets, partitions, topic)
+
+            val response = bigQueryService.sendBatch(ads, offsets, partitions, "teampam.stilling-intern-1")
             if (response.hasError) {
                 LOG.error("We got error while inserting to bigquery, rows failed {}", response.rowsError)
                 throw Exception("Rows inserts failed!")
