@@ -27,7 +27,7 @@ class StatusController(private val kafkaStateRegistry: KafkaStateRegistry, priva
                     LOG.error("Pausing consumer $it")
                     consumerRegistry.pause(it)
                 }
-            return HttpResponse.serverError("Kafka consumer is not running")
+            //return HttpResponse.serverError("Kafka consumer is not running")
         }
         return HttpResponse.ok("OK")
     }

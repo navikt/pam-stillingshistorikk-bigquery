@@ -26,10 +26,10 @@ class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefiniti
         }
     }
 
-    fun sendBatch(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>, topic: String):BigQueryResponse {
+    fun sendBatch(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>,topics: List<String>):BigQueryResponse {
         val request = InsertAllRequest.newBuilder(tableId)
         for (i in ads.indices) {
-            request.addRow(adSchemaTableDefinition.toRowDefinition(ads[i], offsets[i], partitions[i], topic))
+            request.addRow(adSchemaTableDefinition.toRowDefinition(ads[i], offsets[i], partitions[i], topics[i]))
         }
         val response = bq.insertAll(request.build())
         if (response.hasErrors()) {

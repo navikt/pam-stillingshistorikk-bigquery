@@ -10,6 +10,8 @@ import javax.inject.Singleton
 @Singleton
 class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
 
+    val bqDatetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+
     val schemaV1: Schema = Schema.of(
         Field.of("uuid", StandardSQLTypeName.STRING),
         Field.of("source", StandardSQLTypeName.STRING),
@@ -38,11 +40,11 @@ class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
         return HashMap<String,Any?>().apply {
             put("uuid", ad.uuid)
             put("source", ad.source)
-            put("created", ad.created.format(DateTimeFormatter.ISO_DATE_TIME))
-            put("updated", ad.updated.format(DateTimeFormatter.ISO_DATE_TIME))
-            if (ad.published!=null) put("published", ad.published.format(DateTimeFormatter.ISO_DATE_TIME))
-            put("expires",ad.expires.format(DateTimeFormatter.ISO_DATE_TIME))
-            put("publishedByAdmin", ad.publishedByAdmin?.format(DateTimeFormatter.ISO_DATE_TIME))
+            put("created", ad.created.format(bqDatetimeFormatter))
+            put("updated", ad.updated.format(bqDatetimeFormatter))
+            if (ad.published!=null) put("published", ad.published.format(bqDatetimeFormatter))
+            put("expires",ad.expires.format(bqDatetimeFormatter))
+            if (ad.publishedByAdmin!=null) put("publishedByAdmin", ad.publishedByAdmin.format(bqDatetimeFormatter))
             put("status", ad.status)
             put("adminIdent", ad.administration.navIdent)
             put("adminStatus", ad.administration.status)

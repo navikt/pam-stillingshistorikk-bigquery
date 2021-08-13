@@ -7,9 +7,10 @@ import io.micronaut.configuration.kafka.annotation.Topic
 import io.micronaut.context.annotation.Requires
 import org.slf4j.LoggerFactory
 
+
+@Requires(property = "adlistener.enabled", value = "true")
 @KafkaListener(clientId = AD_LISTENER_CLIENT_ID, groupId = "\${adlistener.group-id:pam-stihibi}", threads = 1, offsetReset = OffsetReset.EARLIEST,
         batch = true, offsetStrategy = OffsetStrategy.SYNC)
-@Requires(property = "adlistener.enabled", value = "true")
 class AdTopicListener(private val bigQueryService: BigQueryService) {
 
     companion object {
@@ -18,16 +19,14 @@ class AdTopicListener(private val bigQueryService: BigQueryService) {
 
 
     @Topic("\${adlistener.topic:StillingIntern}")
-    fun receive(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>, topic: List<String>) {
+    fun receive(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>, topics: List<String>) {
         LOG.info("Received batch with {} ads", ads.size)
-        LOG.info("Topic is {}", topic[0])
         if (ads.isNotEmpty()) {
-            if (ads.size!=offsets.size || ads.size!=partitions.size)
-                LOG.error("Something is not correct, size should be the same")
-            val response = bigQueryService.sendBatch(ads, offsets, partitions, "teampam.stilling-intern-1")
+            val response = bigQueryService.sendBatch(ads, offsets, partitions, topics)
             if (response.hasError) {
                 LOG.error("We got error while inserting to bigquery, rows failed {}", response.rowsError)
-                throw Exception("Rows inserts failed!")
+                LOG.error("failed on offset ${offsets[0]} partition ${partitions[0]}")
+                throw Throwable("Rows inserts failed!")
             }
         }
      }
