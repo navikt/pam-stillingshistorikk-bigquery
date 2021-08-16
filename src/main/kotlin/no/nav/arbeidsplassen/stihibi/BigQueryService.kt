@@ -4,13 +4,13 @@ import com.google.cloud.bigquery.*
 import org.slf4j.LoggerFactory
 import javax.inject.Singleton
 
+
 @Singleton
 class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefinition) {
 
 
     private val bq = BigQueryOptions.getDefaultInstance().service
     private val tableId: TableId = TableId.of(adSchemaTableDefinition.dataSet,adSchemaTableDefinition.tableNameV1)
-    private val tableInfo: TableInfo = TableInfo.newBuilder(tableId, StandardTableDefinition.of(adSchemaTableDefinition.schemaV1)).build()
 
     companion object {
         private val LOG = LoggerFactory.getLogger(BigQueryService::class.java)
@@ -40,7 +40,19 @@ class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefiniti
     }
 
     private fun createTable():Table? {
-        return bq.getTable(tableId) ?: bq.create(tableInfo)
+        return bq.getTable(tableId) ?: createTableWithPartition()
+    }
+
+    private fun createTableWithPartition(): Table {
+        val partitioning = TimePartitioning.newBuilder(TimePartitioning.Type.DAY)
+            .setField("created") //  name of column to use for partitioning
+            .build()
+        val tableDefinition = StandardTableDefinition.newBuilder()
+            .setSchema(adSchemaTableDefinition.schemaV1)
+            .setTimePartitioning(partitioning)
+            .build()
+        val tableInfo = TableInfo.newBuilder(tableId, tableDefinition).build()
+        return bq.create(tableInfo)
     }
 }
 
