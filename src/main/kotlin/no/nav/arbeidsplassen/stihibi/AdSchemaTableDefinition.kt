@@ -10,7 +10,9 @@ import javax.inject.Singleton
 @Singleton
 class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
 
-    val bqDatetimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    private val bqDatetimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
+    val tableNameV1 = "stilling_historikk_v1"
+    val dataSet = "stilling_historikk_bq"
 
     val schemaV1: Schema = Schema.of(
         Field.of("uuid", StandardSQLTypeName.STRING),
@@ -31,10 +33,8 @@ class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
         Field.of("kafkaOffset", StandardSQLTypeName.STRING),
         Field.of("kafkaPartition", StandardSQLTypeName.STRING),
         Field.of("kafkaTopic", StandardSQLTypeName.STRING),
-        Field.of("json", StandardSQLTypeName.STRING))
-
-    val tableNameV1 = "stilling_historikk_v1"
-    val dataSet = "stilling_historikk_bq"
+        Field.of("json", StandardSQLTypeName.STRING),
+        Field.of("md5", StandardSQLTypeName.STRING))
 
     fun toRowDefinition(ad: AdTransport, kafkaOffset:Long, kafkaPartition: Int, kafkaTopic: String): Map<String,Any?> {
         return HashMap<String,Any?>().apply {
@@ -56,7 +56,9 @@ class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
             put("kafkaOffset", kafkaOffset)
             put("kafkaPartition", kafkaPartition)
             put("kafkaTopic", kafkaTopic)
-            put("json", objectMapper.writeValueAsString(ad))
+            val jsonString = objectMapper.writeValueAsString(ad)
+            put("json", jsonString)
+            put("md5", jsonString.toMD5Hex())
         }
     }
 }
