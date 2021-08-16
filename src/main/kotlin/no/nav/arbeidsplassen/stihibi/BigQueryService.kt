@@ -44,7 +44,7 @@ class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefiniti
     }
 
     private fun createTableWithPartition(): Table {
-        val partitioning = TimePartitioning.newBuilder(TimePartitioning.Type.DAY)
+        val partitioning = TimePartitioning.newBuilder(TimePartitioning.Type.YEAR)
             .setField("created") //  name of column to use for partitioning
             .build()
         val tableDefinition = StandardTableDefinition.newBuilder()
