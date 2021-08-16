@@ -1,7 +1,8 @@
 {
   "ingress": ["https://pam-stihibi.prod-gcp.nais.io"],
-  "adlistener_group_id": "stihibi_20210809",
+  "adlistener_group_id": "stihibi_20210817",
   "adlistener_topic": "teampam.stilling-historikk",
-  "adlistener.enabled": "false",
+  "adlistener_enabled": "true",
+  "google_cloud_project": "teampam-prod-7da6",
   "kafka_pool": "nav-prod"
 }
