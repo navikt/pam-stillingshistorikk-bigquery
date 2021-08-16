@@ -1,6 +1,6 @@
 {
   "adlistener_group_id": "stihibi_20210809",
-  "adlistener_topic": "teampam.stilling-intern-1",
+  "adlistener_topic": "teampam.stilling-historikk",
   "adlistener.enabled": "false",
   "kafka_pool": "nav-prod"
 }
