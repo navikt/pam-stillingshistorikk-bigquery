@@ -24,6 +24,7 @@ class AdTopicListener(private val bigQueryService: BigQueryService, private val 
         LOG.info("Received batch with {} ads", ads.size)
         if (kafkaStateRegistry.hasError()) {
             LOG.error("Kafka state is set to error, skipping this batch to avoid message loss. Consumer should be set to pause")
+            return
         }
         if (ads.isNotEmpty()) {
             val response = bigQueryService.sendBatch(ads, offsets, partitions, topics)

@@ -1,6 +1,5 @@
 package no.nav.arbeidsplassen.stihibi
 
-import io.micronaut.configuration.kafka.ConsumerRegistry
 import javax.inject.Singleton
 
 @Singleton

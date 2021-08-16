@@ -4,6 +4,7 @@ import io.micronaut.configuration.kafka.ConsumerRegistry
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Put
 import org.slf4j.LoggerFactory
 
 @Controller("/internal")
@@ -21,14 +22,8 @@ class StatusController(private val kafkaStateRegistry: KafkaStateRegistry, priva
     @Get("/isAlive")
     fun isAlive(): HttpResponse<String> {
         if (kafkaStateRegistry.hasError()) {
-            LOG.error("A Kafka consumer is set to Error, setting all consumers to pause")
-            consumerRegistry.consumerIds
-                .forEach {
-                    if (!consumerRegistry.isPaused(it)) {
-                        LOG.error("Pausing consumer $it")
-                        consumerRegistry.pause(it)
-                    }
-                }
+            LOG.error("A Kafka consumer is set to Error")
+            pauseAllConsumers()
             // not necessary to restart the app.
             //return HttpResponse.serverError("Kafka consumer is not running")
         }
@@ -38,6 +33,17 @@ class StatusController(private val kafkaStateRegistry: KafkaStateRegistry, priva
     @Get("/kafkaState")
     fun setKafkaState(): Boolean {
         return kafkaStateRegistry.hasError()
+    }
+
+    @Put("kafkaState/pause")
+    fun pauseAllConsumers() {
+        LOG.info("Pausing all consumers")
+        consumerRegistry.consumerIds.forEach {
+            if (!consumerRegistry.isPaused(it)) {
+                LOG.error("Pausing consumer $it")
+                consumerRegistry.pause(it)
+            }
+        }
     }
 
 }
