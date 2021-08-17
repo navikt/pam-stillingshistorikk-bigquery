@@ -30,7 +30,7 @@ class AdTopicListener(private val bigQueryService: BigQueryService, private val 
             val response = bigQueryService.sendBatch(ads, offsets, partitions, topics)
             if (response.hasError) {
                 LOG.error("We got error while inserting to bigquery, rows failed {}", response.rowsError)
-                LOG.error("failed on offset ${offsets[0]} partition ${partitions[0]}")
+                LOG.error("failed at start batch offset ${offsets[0]} partition ${partitions[0]}")
                 throw Throwable("Rows inserts failed!")
             }
             LOG.info("Insert successfully, committing offset")
