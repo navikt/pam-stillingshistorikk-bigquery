@@ -19,7 +19,7 @@ class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefiniti
     init {
         val table = createTable()
         if (table!=null) {
-            LOG.info("We are using bigquery table {}", table.tableId.table)
+            LOG.info("We are using bigquery table {}", table.tableId)
         }
         else {
             LOG.error("Could not find or create table in bigquery")
@@ -54,6 +54,7 @@ class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefiniti
         val tableInfo = TableInfo.newBuilder(tableId, tableDefinition).build()
         return bq.create(tableInfo)
     }
+
 }
 
 data class BigQueryResponse(val hasError: Boolean, val rowsError: Int)
