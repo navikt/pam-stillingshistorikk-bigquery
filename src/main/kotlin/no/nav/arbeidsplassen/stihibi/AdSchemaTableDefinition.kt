@@ -16,6 +16,8 @@ class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
 
     val schemaV1: Schema = Schema.of(
         Field.of("uuid", StandardSQLTypeName.STRING),
+        Field.of("id", StandardSQLTypeName.INT64),
+        Field.of("reference", StandardSQLTypeName.STRING),
         Field.of("source", StandardSQLTypeName.STRING),
         Field.of("created", StandardSQLTypeName.DATETIME),
         Field.of("updated", StandardSQLTypeName.DATETIME),
@@ -39,6 +41,8 @@ class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
     fun toRowDefinition(ad: AdTransport, kafkaOffset:Long, kafkaPartition: Int, kafkaTopic: String): Map<String,Any?> {
         return HashMap<String,Any?>().apply {
             put("uuid", ad.uuid)
+            put("id", ad.id)
+            put("reference", ad.reference)
             put("source", ad.source)
             put("created", ad.created.format(bqDatetimeFormatter))
             put("updated", ad.updated.format(bqDatetimeFormatter))
