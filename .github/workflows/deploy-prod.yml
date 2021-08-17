@@ -24,6 +24,6 @@ jobs:
           RESOURCE: naiserator.yml
           VARS: naiserator-prod.json
       - name: post-production
-        uses: navikt/pam-deploy/actions/post-production@v1
+        uses: navikt/pam-deploy/actions/post-production@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
