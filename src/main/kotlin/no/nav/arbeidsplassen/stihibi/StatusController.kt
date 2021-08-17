@@ -46,4 +46,14 @@ class StatusController(private val kafkaStateRegistry: KafkaStateRegistry, priva
         }
     }
 
+    @Put("kafkaState/resume")
+    fun resumeAllConsumers() {
+        LOG.info("Resume all consumers")
+        consumerRegistry.consumerIds.forEach {
+            if (consumerRegistry.isPaused(it)) {
+                LOG.error("Resume consumer $it")
+                consumerRegistry.resume(it)
+            }
+        }
+    }
 }
