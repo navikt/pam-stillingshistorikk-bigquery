@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.bigquery.Field
 import com.google.cloud.bigquery.Schema
 import com.google.cloud.bigquery.StandardSQLTypeName
-import java.time.format.DateTimeFormatter
 import javax.inject.Singleton
 
 @Singleton
 class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
 
-    private val bqDatetimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
     val tableNameV1 = "stilling_historikk_v1"
     val dataSet = "stilling_historikk_bq"
 
@@ -44,11 +42,11 @@ class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
             put("id", ad.id)
             put("reference", ad.reference)
             put("source", ad.source)
-            put("created", ad.created.format(bqDatetimeFormatter))
-            put("updated", ad.updated.format(bqDatetimeFormatter))
-            if (ad.published!=null) put("published", ad.published.format(bqDatetimeFormatter))
-            put("expires",ad.expires.format(bqDatetimeFormatter))
-            if (ad.publishedByAdmin!=null) put("publishedByAdmin", ad.publishedByAdmin.format(bqDatetimeFormatter))
+            put("created", ad.created.toBqDateTime())
+            put("updated", ad.updated.toBqDateTime())
+            if (ad.published!=null) put("published", ad.published.toBqDateTime())
+            put("expires",ad.expires.toBqDateTime())
+            if (ad.publishedByAdmin!=null) put("publishedByAdmin", ad.publishedByAdmin.toBqDateTime())
             put("status", ad.status)
             put("adminIdent", ad.administration.navIdent)
             put("adminStatus", ad.administration.status)

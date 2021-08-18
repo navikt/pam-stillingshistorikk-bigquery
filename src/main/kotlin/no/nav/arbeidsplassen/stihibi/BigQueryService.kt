@@ -1,16 +1,18 @@
 package no.nav.arbeidsplassen.stihibi
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.bigquery.*
 import org.slf4j.LoggerFactory
 import javax.inject.Singleton
 
 
 @Singleton
-class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefinition) {
+class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefinition, private val objectMapper: ObjectMapper) {
 
 
     private val bq = BigQueryOptions.getDefaultInstance().service
     private val tableId: TableId = TableId.of(adSchemaTableDefinition.dataSet,adSchemaTableDefinition.tableNameV1)
+    private val tableFNAME = "${bq.options.projectId}.${tableId.dataset}.${tableId.table}"
 
     companion object {
         private val LOG = LoggerFactory.getLogger(BigQueryService::class.java)
@@ -19,7 +21,7 @@ class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefiniti
     init {
         val table = createTable()
         if (table!=null) {
-            LOG.info("We are using bigquery table {}", table.tableId)
+            LOG.info("We are using bigquery table {}", tableFNAME)
         }
         else {
             LOG.error("Could not find or create table in bigquery")
@@ -55,6 +57,17 @@ class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefiniti
         return bq.create(tableInfo)
     }
 
+    fun queryAdHistory(uuid: String, year: Int):List<AdTransport> {
+        val query = """SELECT json FROM `${tableFNAME}` WHERE uuid = @uuid AND EXTRACT(YEAR FROM created) = @year ORDER BY updated asc LIMIT 1000"""
+        val queryConfig = QueryJobConfiguration.newBuilder(query)
+            .addNamedParameter("uuid", QueryParameterValue.string(uuid))
+            .addNamedParameter("year", QueryParameterValue.int64(year))
+            .build()
+        val results: TableResult = bq.query(queryConfig)
+        return results.iterateAll().map {
+            objectMapper.readValue(it["json"].value.toString(), AdTransport::class.java)
+        }.toList()
+    }
 }
 
 data class BigQueryResponse(val hasError: Boolean, val rowsError: Int)

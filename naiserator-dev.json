@@ -1,5 +1,5 @@
 {
-  "ingress": ["https://pam-stihibi.dev-gcp.nais.io"],
+  "ingress": ["https://pam-stihibi.dev-gcp.nais.io", "https://stillingshistorik.dev.intern.nav.no"],
   "adlistener_group_id": "stihibi_20210817",
   "adlistener_topic": "teampam.stilling-historikk",
   "adlistener_enabled": "true",

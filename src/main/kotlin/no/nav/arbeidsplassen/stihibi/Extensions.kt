@@ -1,10 +1,12 @@
 package no.nav.arbeidsplassen.stihibi
 
 import java.security.MessageDigest
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 val HEX_CHARS = "0123456789ABCDEF".toCharArray()
-
+val bqDatetimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
 
 fun String.toMD5Hex(): String {
     val digest = MessageDigest.getInstance("MD5")!!
@@ -22,4 +24,6 @@ fun ByteArray.hexBinary(): String {
     }
     return r.toString()
 }
+
+fun LocalDateTime.toBqDateTime(): String = format(bqDatetimeFormatter)
 

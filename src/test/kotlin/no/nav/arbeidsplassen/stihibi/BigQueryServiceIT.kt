@@ -5,6 +5,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
+// This test requires access to bigquery, useful to test bigquery.
 @MicronautTest
 class BigQueryServiceIT(private val bigQueryService: BigQueryService, private val objectMapper: ObjectMapper) {
 
@@ -17,4 +18,8 @@ class BigQueryServiceIT(private val bigQueryService: BigQueryService, private va
         println(response)
     }
 
+    @Test
+    fun queryBigQuery() {
+        val ads = bigQueryService.queryAdHistory("e282c8c3-2c2b-4d9e-bfab-d1804df4c9de", 2021)
+    }
 }
