@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.bigquery.Field
 import com.google.cloud.bigquery.Schema
 import com.google.cloud.bigquery.StandardSQLTypeName
-import javax.inject.Singleton
+import jakarta.inject.Singleton
 
 @Singleton
 class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {

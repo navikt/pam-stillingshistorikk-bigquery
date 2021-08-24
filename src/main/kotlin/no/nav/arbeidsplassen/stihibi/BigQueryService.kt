@@ -2,8 +2,8 @@ package no.nav.arbeidsplassen.stihibi
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.cloud.bigquery.*
+import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
-import javax.inject.Singleton
 
 
 @Singleton

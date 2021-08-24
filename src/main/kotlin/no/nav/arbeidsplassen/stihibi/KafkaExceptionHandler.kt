@@ -1,16 +1,16 @@
 package no.nav.arbeidsplassen.stihibi
 
-import io.micronaut.configuration.kafka.ConsumerRegistry
 import io.micronaut.configuration.kafka.exceptions.DefaultKafkaListenerExceptionHandler
 import io.micronaut.configuration.kafka.exceptions.KafkaListenerException
 import io.micronaut.configuration.kafka.exceptions.KafkaListenerExceptionHandler
 import io.micronaut.context.annotation.Replaces
+import jakarta.inject.Singleton
 import org.apache.kafka.clients.consumer.Consumer
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.errors.SerializationException
 import org.slf4j.LoggerFactory
 import java.util.regex.Pattern
-import javax.inject.Singleton
+
 
 @Singleton
 @Replaces(bean = DefaultKafkaListenerExceptionHandler::class)
