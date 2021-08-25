@@ -48,8 +48,8 @@ dependencies {
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
     implementation("com.google.cloud:google-cloud-graalvm-support:0.6.0")
-    implementation("io.micronaut.micrometer:micronaut-micrometer-core:${micronautMicrometerVersion}")
-    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus:${micronautMicrometerVersion}")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")
 
 }
