@@ -12,6 +12,7 @@ group "no.nav.arbeidsplassen.stihibi"
 val kotlinVersion=project.properties.get("kotlinVersion")
 val micronautKafkaVersion=project.properties.get("micronautKafkaVersion")
 val micronautMicrometerVersion=project.properties.get("micronautMicrometerVersion")
+val logbackEncoderVersion=project.properties.get("logbackEncoderVersion")
 
 repositories {
     mavenLocal()
@@ -39,6 +40,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     implementation("io.micronaut.kafka:micronaut-kafka:${micronautKafkaVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
+    runtimeOnly("net.logstash.logback:logstash-logback-encoder:${logbackEncoderVersion}")
     implementation("io.micronaut:micronaut-validation")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 

@@ -1,12 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n
-            </pattern>
+    <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
         </encoder>
     </appender>
-    <logger name="no.nav.arbeidsplassen" level="DEBUG" />
+
+    <logger name="no.nav" level="INFO" />
+
     <root level="INFO">
-        <appender-ref ref="stdout"/>
+        <appender-ref ref="stdout_json" />
     </root>
 </configuration>
