@@ -74,5 +74,7 @@ tasks {
         }
     }
 
-
+    build {
+        finalizedBy(generateResourceConfigFile)
+    }
 }
