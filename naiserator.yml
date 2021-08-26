@@ -30,7 +30,7 @@ spec:
   webproxy: false
   prometheus:
     enabled: true
-    path: /myprometheus
+    path: /prometheus
   kafka:
     pool: {{ kafka_pool }}
   ingresses:
