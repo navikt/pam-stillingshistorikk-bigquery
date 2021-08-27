@@ -5,7 +5,6 @@ import com.google.cloud.bigquery.*
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 
-
 @Singleton
 class BigQueryService(private val adSchemaTableDefinition: AdSchemaTableDefinition, private val objectMapper: ObjectMapper) {
 

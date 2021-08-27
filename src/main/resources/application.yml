@@ -8,19 +8,24 @@ micronaut:
       read-timeout: 300s
   metrics:
     enabled: true
-    sensitive: false
     binders:
+      uptime:
+        enabled: true
+      processor:
+        enabled: true
       jvm:
         enabled: true
     export:
       prometheus:
         enabled: true
-        descriptions: false
+        step: PT1M
+        descriptions: true
+
 endpoints:
-  metrics:
+  all:
     enabled: true
-  prometheus:
     sensitive: false
+
 jackson:
   bean-introspection-module: true
   serialization:
