@@ -24,8 +24,7 @@ class StatusController(private val kafkaStateRegistry: KafkaStateRegistry, priva
         if (kafkaStateRegistry.hasError()) {
             LOG.error("A Kafka consumer is set to Error")
             pauseAllConsumers()
-            // not necessary to restart the app.
-            //return HttpResponse.serverError("Kafka consumer is not running")
+            return HttpResponse.serverError("Kafka consumer is not running")
         }
         return HttpResponse.ok("OK")
     }
