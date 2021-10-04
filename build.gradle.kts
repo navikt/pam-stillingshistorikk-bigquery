@@ -31,6 +31,7 @@ micronaut {
 }
 
 dependencies {
+    implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     kapt("io.micronaut:micronaut-http-validation")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
@@ -51,6 +52,9 @@ dependencies {
     implementation("io.micronaut.micrometer:micronaut-micrometer-core")
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")
+
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
 
 }
 
@@ -76,5 +80,9 @@ tasks {
 
     build {
         finalizedBy(generateResourceConfigFile)
+    }
+
+    test {
+        exclude("**/*IT.class")
     }
 }
