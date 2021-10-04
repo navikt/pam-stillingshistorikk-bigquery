@@ -31,7 +31,6 @@ micronaut {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     kapt("io.micronaut:micronaut-http-validation")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut:micronaut-runtime")
