@@ -52,6 +52,9 @@ dependencies {
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")
 
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+
 }
 
 
@@ -76,5 +79,9 @@ tasks {
 
     build {
         finalizedBy(generateResourceConfigFile)
+    }
+
+    test {
+        exclude("**/*IT.class")
     }
 }
