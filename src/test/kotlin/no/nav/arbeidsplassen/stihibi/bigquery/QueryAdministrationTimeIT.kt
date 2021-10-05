@@ -11,6 +11,6 @@ class QueryAdministrationTimeIT(private val bigQueryService: BigQueryService) {
 
     @Test
     fun administrationTime() {
-        bigQueryService.queryAdministrationTime(LocalDate.of(2021, 9, 1), LocalDate.of(2021,10,1))
+        println(bigQueryService.queryAdministrationTime(LocalDate.of(2021, 9, 1), LocalDate.of(2021,10,1)))
     }
 }
