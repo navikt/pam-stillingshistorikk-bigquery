@@ -80,7 +80,7 @@ class BigQueryService(
     fun queryAdministrationTime(from: LocalDate, to: LocalDate): String {
         val query = """
             SELECT * FROM (
-            SELECT '@from - @to' as Periode, Kilde, APPROX_QUANTILES(admintime,100)[SAFE_OFFSET(50)] AS Median, AVG(admintime) AS Gjennomsnitt FROM (
+            SELECT '${from} - ${to}' as Periode, Kilde, APPROX_QUANTILES(admintime,100)[SAFE_OFFSET(50)] AS Median, AVG(admintime) AS Gjennomsnitt FROM (
             SELECT * FROM (
             SELECT t0.behandlingstid AS admintime, t0.source AS Kilde FROM (
             WITH pending as (SELECT uuid, adminStatus, source,  MIN(updated) as starttime from `${tableFNAME}` where adminStatus='PENDING' and updatedBy='nss-admin' and created >= @from and created < @to group by uuid, adminStatus, source),
