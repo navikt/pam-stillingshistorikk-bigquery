@@ -87,7 +87,7 @@ class BigQueryService(
             done as (SELECT uuid, adminStatus, source, MIN(Updated) as endtime from `${tableFNAME}` where adminStatus='DONE' and updatedBy='nss-admin' and created >= @from and created < @to group by uuid, adminStatus, source) 
             SELECT pending.uuid, pending.starttime, done.endtime, pending.source, timestamp_diff(endtime, starttime, SECOND) as behandlingstid FROM pending, done where pending.uuid = done.uuid and pending.source!='ASS' and pending.source!='DIR'
             ) t0
-            ) WHERE (admintime < 28800)
+            ) WHERE (admintime < 3600)
             ) GROUP BY Kilde
             ) LIMIT 20000000
         """.trimIndent()
