@@ -80,14 +80,14 @@ class BigQueryService(
     fun queryAdministrationTime(from: LocalDate, to: LocalDate): String {
         val query = """
             SELECT * FROM (
-            SELECT LAST_DAY(@from) as Periode, Kilde, APPROX_QUANTILES(admintime,100)[SAFE_OFFSET(50)] AS Median, AVG(admintime) AS Gjennomsnitt FROM (
+            SELECT '@from - @to' as Periode, Kilde, APPROX_QUANTILES(admintime,100)[SAFE_OFFSET(50)] AS Median, AVG(admintime) AS Gjennomsnitt FROM (
             SELECT * FROM (
             SELECT t0.behandlingstid AS admintime, t0.source AS Kilde FROM (
             WITH pending as (SELECT uuid, adminStatus, source,  MIN(updated) as starttime from `${tableFNAME}` where adminStatus='PENDING' and updatedBy='nss-admin' and created >= @from and created < @to group by uuid, adminStatus, source),
             done as (SELECT uuid, adminStatus, source, MIN(Updated) as endtime from `${tableFNAME}` where adminStatus='DONE' and updatedBy='nss-admin' and created >= @from and created < @to group by uuid, adminStatus, source) 
             SELECT pending.uuid, pending.starttime, done.endtime, pending.source, timestamp_diff(endtime, starttime, SECOND) as behandlingstid FROM pending, done where pending.uuid = done.uuid and pending.source!='ASS' and pending.source!='DIR'
             ) t0
-            ) WHERE (admintime < 3600)
+            ) WHERE (admintime < 14400)
             ) GROUP BY Kilde
             ) LIMIT 20000000
         """.trimIndent()
