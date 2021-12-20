@@ -44,10 +44,10 @@ dependencies {
     implementation("io.micronaut:micronaut-validation")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    api(platform("com.google.cloud:libraries-bom:20.9.0"))
+    api(platform("com.google.cloud:libraries-bom:24.1.0"))
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
-    implementation("com.google.cloud:google-cloud-graalvm-support:0.6.0")
+    implementation("com.google.cloud:google-cloud-graalvm-support:0.7.0")
     implementation("io.micronaut.micrometer:micronaut-micrometer-core")
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")
