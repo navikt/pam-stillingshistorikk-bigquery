@@ -93,6 +93,6 @@ tasks {
     test {
         exclude("**/*IT.class")
     }
-
-
 }
+
+tasks.jar { enabled = false }
