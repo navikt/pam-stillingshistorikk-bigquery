@@ -31,5 +31,5 @@ jackson:
   serialization:
     indentOutput: true
 adlistener:
-  topic: StillingIntern
+  topic: teampam.stilling-historikk
 

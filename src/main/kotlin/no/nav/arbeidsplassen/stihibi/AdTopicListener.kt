@@ -19,7 +19,7 @@ class AdTopicListener(private val bigQueryService: BigQueryService, private val 
     }
 
 
-    @Topic("\${adlistener.topic:StillingIntern}")
+    @Topic("\${adlistener.topic:teampam.stilling-historikk}")
     fun receive(ads: List<AdTransport>, offsets: List<Long>, partitions: List<Int>, topics: List<String>, kafkaconsumer: Consumer<*, *>) {
         LOG.info("Received batch with {} ads", ads.size)
         if (kafkaStateRegistry.hasError()) {
