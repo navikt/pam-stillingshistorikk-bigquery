@@ -1,4 +1,4 @@
-FROM ghcr.io/graalvm/graalvm-ce:java11-21.2.0 AS graalvm
+FROM ghcr.io/graalvm/graalvm-ce:java17-21.3.0 AS graalvm
 RUN gu install native-image
 WORKDIR /home/app
 COPY build/docker/layers/libs /home/app/libs
