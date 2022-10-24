@@ -42,9 +42,14 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("net.logstash.logback:logstash-logback-encoder:${logbackEncoderVersion}")
     implementation("io.micronaut:micronaut-validation")
-    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
-    api(platform("com.google.cloud:libraries-bom:24.1.0"))
+    //Snyk warning
+    implementation("org.apache.kafka:kafka-clients:3.3.1")
+    implementation("org.yaml:snakeyaml:1.33")
+
+
+    api(platform("com.google.cloud:libraries-bom:26.1.3"))
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
     implementation("com.google.cloud:google-cloud-graalvm-support:0.7.0")
