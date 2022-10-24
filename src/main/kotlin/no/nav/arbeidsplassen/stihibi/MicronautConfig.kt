@@ -10,7 +10,7 @@ import io.micronaut.context.event.BeanCreatedEventListener
 import jakarta.inject.Singleton
 
 @Singleton
-class ObjectMapperBeanEventListener(): BeanCreatedEventListener<ObjectMapper> {
+class ObjectMapperBeanEventListener: BeanCreatedEventListener<ObjectMapper> {
     override fun onCreated(event: BeanCreatedEvent<ObjectMapper>): ObjectMapper {
         val objectMapper = event.bean
         objectMapper.registerModule(JavaTimeModule())
