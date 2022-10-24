@@ -45,7 +45,7 @@ dependencies {
     //Snyk fixes
     implementation("org.apache.kafka:kafka-clients:3.3.1")
     implementation("org.yaml:snakeyaml:1.33")
-    implementation("io.micronaut:micronaut-graal:3.7.2")
+    //implementation("io.micronaut:micronaut-graal:3.7.2")
     implementation("io.micronaut:micronaut-inject:3.7.2")
     implementation("io.micronaut:micronaut-runtime:3.7.2")
 
@@ -53,7 +53,7 @@ dependencies {
     api(platform("com.google.cloud:libraries-bom:26.1.3"))
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
-    implementation("com.google.cloud:google-cloud-graalvm-support:0.7.0")
+    //implementation("com.google.cloud:google-cloud-graalvm-support:0.7.0")
     implementation("io.micronaut.micrometer:micronaut-micrometer-core")
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")
@@ -76,17 +76,19 @@ tasks {
     compileKotlin {
         kotlinOptions {
             jvmTarget = "17"
+            javaParameters = true
         }
     }
     compileTestKotlin {
         kotlinOptions {
             jvmTarget = "17"
+            javaParameters = true
         }
     }
 
-    build {
-        finalizedBy(generateResourcesConfigFile)
-    }
+//    build {
+//        finalizedBy(generateResourcesConfigFile)
+//    }
 
     test {
         exclude("**/*IT.class")
