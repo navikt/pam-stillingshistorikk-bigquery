@@ -95,4 +95,3 @@ tasks {
     }
 }
 
-tasks.jar { enabled = false }
