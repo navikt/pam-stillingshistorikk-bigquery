@@ -9,9 +9,9 @@ plugins {
 version = "0.1"
 group "no.nav.arbeidsplassen.stihibi"
 
-val kotlinVersion=project.properties.get("kotlinVersion")
-val micronautKafkaVersion=project.properties.get("micronautKafkaVersion")
-val logbackEncoderVersion=project.properties.get("logbackEncoderVersion")
+val kotlinVersion= project.properties["kotlinVersion"]
+val micronautKafkaVersion= project.properties["micronautKafkaVersion"]
+val logbackEncoderVersion= project.properties["logbackEncoderVersion"]
 
 repositories {
     mavenLocal()
@@ -44,25 +44,17 @@ dependencies {
 
     //Snyk fixes
     implementation("org.apache.kafka:kafka-clients:3.3.1")
-    implementation("org.yaml:snakeyaml:1.33")
-    //implementation("io.micronaut:micronaut-graal:3.7.2")
-    implementation("io.micronaut:micronaut-inject:3.7.2")
-    implementation("io.micronaut:micronaut-runtime:3.7.2")
-
 
     api(platform("com.google.cloud:libraries-bom:26.1.3"))
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
-    //implementation("com.google.cloud:google-cloud-graalvm-support:0.7.0")
     implementation("io.micronaut.micrometer:micronaut-micrometer-core")
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")
 
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-
 }
-
 
 application {
     mainClass.set("no.nav.arbeidsplassen.stihibi.Application")
@@ -85,11 +77,6 @@ tasks {
             javaParameters = true
         }
     }
-
-//    build {
-//        finalizedBy(generateResourcesConfigFile)
-//    }
-
     test {
         exclude("**/*IT.class")
     }
