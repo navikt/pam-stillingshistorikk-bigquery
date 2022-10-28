@@ -1,18 +1,17 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.5.21"
-    id("org.jetbrains.kotlin.kapt") version "1.5.21"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("io.micronaut.application") version "2.0.3"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.5.21"
+    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.kapt") version "1.7.20"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.micronaut.application") version "3.6.2"
+    id("org.jetbrains.kotlin.plugin.allopen") version "1.7.20"
 }
 
 version = "0.1"
 group "no.nav.arbeidsplassen.stihibi"
 
-val kotlinVersion=project.properties.get("kotlinVersion")
-val micronautKafkaVersion=project.properties.get("micronautKafkaVersion")
-val micronautMicrometerVersion=project.properties.get("micronautMicrometerVersion")
-val logbackEncoderVersion=project.properties.get("logbackEncoderVersion")
+val kotlinVersion= project.properties["kotlinVersion"]
+val micronautKafkaVersion= project.properties["micronautKafkaVersion"]
+val logbackEncoderVersion= project.properties["logbackEncoderVersion"]
 
 repositories {
     mavenLocal()
@@ -33,7 +32,6 @@ micronaut {
 dependencies {
     kapt("io.micronaut:micronaut-http-validation")
     implementation("io.micronaut:micronaut-http-client")
-    implementation("io.micronaut:micronaut-runtime")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("javax.annotation:javax.annotation-api")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
@@ -44,52 +42,43 @@ dependencies {
     implementation("io.micronaut:micronaut-validation")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
-    //Snyk warning
+    //Snyk fixes
     implementation("org.apache.kafka:kafka-clients:3.3.1")
-    implementation("org.yaml:snakeyaml:1.33")
-
 
     api(platform("com.google.cloud:libraries-bom:26.1.3"))
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
-    implementation("com.google.cloud:google-cloud-graalvm-support:0.7.0")
     implementation("io.micronaut.micrometer:micronaut-micrometer-core")
     implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
     implementation("io.micronaut:micronaut-management")
 
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-
 }
-
 
 application {
     mainClass.set("no.nav.arbeidsplassen.stihibi.Application")
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("11")
+    sourceCompatibility = JavaVersion.toVersion("17")
 }
 
 
 tasks {
     compileKotlin {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
+            javaParameters = true
         }
     }
     compileTestKotlin {
         kotlinOptions {
-            jvmTarget = "11"
+            jvmTarget = "17"
+            javaParameters = true
         }
     }
-
-    build {
-        finalizedBy(generateResourceConfigFile)
-    }
-
     test {
         exclude("**/*IT.class")
     }
-
-
 }
+

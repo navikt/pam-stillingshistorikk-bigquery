@@ -8,11 +8,12 @@ on:
       - "CODEOWNERS"
     branches:
       - main
+      - oppdater-dependencies
 jobs:
   call-workflow:
     uses: navikt/pam-deploy/.github/workflows/deploy-dev.yml@v2
     with:
-      JAVA_VERSION: 11
+      JAVA_VERSION: 17
       NAIS_RESOURCE: naiserator.yml
     secrets:
       NAIS_DEPLOY_APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}

@@ -12,4 +12,3 @@ if test -r "${KAFKA_TRUSTSTORE_PATH}";then
   export KAFKA_HEALTH_ENABLED=false
   export KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BROKERS}
 fi
-/app/application
