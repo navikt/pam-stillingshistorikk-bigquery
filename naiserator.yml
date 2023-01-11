@@ -33,6 +33,10 @@ spec:
     path: /prometheus
   kafka:
     pool: {{ kafka_pool }}
+  accessPolicy:
+    inbound:
+      rules:
+        - application: pam-ad-api
   ingresses:
   {{#each ingress as |url|}}
      - {{url}}
