@@ -12,7 +12,7 @@ data class AdTransport(val id: Long, val uuid: String, val createdBy: String, va
                        val employer: AdCompany?, val categoryList: List<Category> = listOf(), val businessName: String?,
                        val administration: Administration, val publishedByAdmin: LocalDateTime?)
 @Introspected
-data class Category(val id: Long, val code: String, val categoryType: String, val name: String, val description: String?, val parentId: Long?)
+data class Category(val id: Long, val code: String, val categoryType: String, val name: String, val description: String?, val parentId: Long?, val score: Double?)
 
 @Introspected
 data class Contact(val name: String?, val title: String?, val email: String?,
