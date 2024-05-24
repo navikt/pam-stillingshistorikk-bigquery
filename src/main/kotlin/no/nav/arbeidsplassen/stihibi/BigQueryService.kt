@@ -71,7 +71,7 @@ class BigQueryService(
             SELECT
                 uuid as adUuid, 
                 JSON_EXTRACT(json, '$.administration.remarks') as remarks, 
-                JSON_EXTRACT(json, '$.administration.reportee') as reportee, 
+                JSON_EXTRACT_SCALAR(json, '$.administration.reportee') as reportee,
                 updated as avvist_tidspunkt 
             FROM `${tableFNAME}` 
             WHERE 

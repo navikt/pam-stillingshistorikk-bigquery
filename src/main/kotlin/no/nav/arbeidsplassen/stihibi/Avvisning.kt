@@ -1,9 +1,7 @@
 package no.nav.arbeidsplassen.stihibi
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDateTime
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class Avvisning(
     val adUuid: String,
     val remarks: List<RemarkType>?,
