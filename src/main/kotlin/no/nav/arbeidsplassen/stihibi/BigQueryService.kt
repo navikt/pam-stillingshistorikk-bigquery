@@ -87,7 +87,7 @@ class BigQueryService(
                 adUuid = it["adUuid"].value.toString(),
                 remarks = objectMapper.readValue<List<RemarkType>>(it["remarks"].value.toString()),
                 reportee = it["reportee"].value.toString(),
-                avvist_tidspunkt = objectMapper.readValue(it["avvist_tidspunkt"].value.toString(), LocalDateTime::class.java)
+                avvist_tidspunkt = LocalDateTime.parse(it["avvist_tidspunkt"].value.toString())
             )
         }
     }
