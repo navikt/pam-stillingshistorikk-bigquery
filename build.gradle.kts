@@ -40,7 +40,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("net.logstash.logback:logstash-logback-encoder:${logbackEncoderVersion}")
     implementation("io.micronaut:micronaut-validation")
-    runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
 
     //Snyk fixes
     implementation("org.apache.kafka:kafka-clients:3.3.1")

@@ -1,10 +1,12 @@
 package no.nav.arbeidsplassen.stihibi
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.cloud.bigquery.*
 import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @Singleton
 class BigQueryService(
@@ -62,6 +64,32 @@ class BigQueryService(
             .build()
         val tableInfo = TableInfo.newBuilder(tableId, tableDefinition).build()
         return bq.create(tableInfo)
+    }
+
+    fun queryAvvisning(): List<Avvisning> {
+        val query = """
+            SELECT
+                uuid as adUuid, 
+                JSON_EXTRACT(json, '$.administration.remarks') as remarks, 
+                JSON_EXTRACT(json, '$.administration.reportee') as reportee, 
+                updated as avvist_tidspunkt 
+            FROM `${tableFNAME}` 
+            WHERE 
+                status='REJECTED' 
+                and created >= DATETIME_SUB(CURRENT_DATETIME(), INTERVAL 1 YEAR)
+            LIMIT 10;
+        """.trimIndent()
+
+        val queryConfig = QueryJobConfiguration.newBuilder(query).build()
+        val results: TableResult = bq.query(queryConfig)
+        return results.iterateAll().map {
+            Avvisning(
+                adUuid = it["adUuid"].value.toString(),
+                remarks = objectMapper.readValue<List<RemarkType>>(it["remarks"].value.toString()),
+                reportee = it["reportee"].value.toString(),
+                avvist_tidspunkt = objectMapper.readValue(it["avvist_tidspunkt"].value.toString(), LocalDateTime::class.java)
+            )
+        }
     }
 
     fun queryAdHistory(uuid: String, year: Int): List<AdTransport> {
