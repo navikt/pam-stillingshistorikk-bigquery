@@ -83,12 +83,12 @@ class BigQueryService(
         val queryConfig = QueryJobConfiguration.newBuilder(query).build()
         val results: TableResult = bq.query(queryConfig)
         LOG.info("Got response from BigQuery")
-        return results.iterateAll().map {
+        return results.iterateAll().map { avvisning ->
             Avvisning(
-                adUuid = it["adUuid"].value.toString(),
-                remarks = objectMapper.readValue<List<RemarkType>>(it["remarks"].value.toString()),
-                reportee = it["reportee"].value.toString(),
-                avvist_tidspunkt = LocalDateTime.parse(it["avvist_tidspunkt"].value.toString())
+                adUuid = avvisning["adUuid"].value.toString(),
+                remarks = avvisning["remarks"].value?.let { objectMapper.readValue<List<RemarkType>>(it.toString())},
+                reportee = avvisning["reportee"].value?.toString(),
+                avvist_tidspunkt = LocalDateTime.parse(avvisning["avvist_tidspunkt"].value.toString())
             )
         }
     }
