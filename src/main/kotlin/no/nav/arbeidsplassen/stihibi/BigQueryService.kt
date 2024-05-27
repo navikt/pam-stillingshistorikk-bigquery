@@ -79,8 +79,10 @@ class BigQueryService(
                 and created >= DATETIME_SUB(CURRENT_DATETIME(), INTERVAL 1 YEAR);
         """.trimIndent()
 
+        LOG.info("Building query and sending to BigQuery")
         val queryConfig = QueryJobConfiguration.newBuilder(query).build()
         val results: TableResult = bq.query(queryConfig)
+        LOG.info("Got response from BigQuery")
         return results.iterateAll().map {
             Avvisning(
                 adUuid = it["adUuid"].value.toString(),
