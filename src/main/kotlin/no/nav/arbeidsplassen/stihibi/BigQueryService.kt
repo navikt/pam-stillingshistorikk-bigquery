@@ -76,8 +76,7 @@ class BigQueryService(
             FROM `${tableFNAME}` 
             WHERE 
                 status='REJECTED' 
-                and created >= DATETIME_SUB(CURRENT_DATETIME(), INTERVAL 1 YEAR)
-            LIMIT 10;
+                and created >= DATETIME_SUB(CURRENT_DATETIME(), INTERVAL 1 YEAR);
         """.trimIndent()
 
         val queryConfig = QueryJobConfiguration.newBuilder(query).build()
