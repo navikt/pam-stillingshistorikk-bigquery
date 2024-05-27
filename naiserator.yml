@@ -42,6 +42,7 @@ spec:
     inbound:
       rules:
         - application: pam-ad-api
+        - application: pam-ad
   ingresses:
   {{#each ingress as |url|}}
      - {{url}}
