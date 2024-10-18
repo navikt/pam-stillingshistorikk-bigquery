@@ -1,9 +1,11 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
-    id("org.jetbrains.kotlin.kapt") version "1.7.20"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("io.micronaut.application") version "3.6.2"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "2.0.21"
+    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
+    id("com.gradleup.shadow") version "8.3.2"
+    id("io.micronaut.application") version "4.4.2"
+    id("org.jetbrains.kotlin.plugin.allopen") version "2.0.21"
 }
 
 version = "0.1"
@@ -16,7 +18,6 @@ val logbackEncoderVersion= project.properties["logbackEncoderVersion"]
 repositories {
     mavenLocal()
     mavenCentral()
-    maven("https://jcenter.bintray.com")
     maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
 }
 
@@ -30,22 +31,24 @@ micronaut {
 }
 
 dependencies {
-    kapt("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+    implementation("io.micronaut.validation:micronaut-validation")
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("javax.annotation:javax.annotation-api")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     implementation("io.micronaut.kafka:micronaut-kafka:${micronautKafkaVersion}")
+    implementation("io.micronaut:micronaut-jackson-databind")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("net.logstash.logback:logstash-logback-encoder:${logbackEncoderVersion}")
-    implementation("io.micronaut:micronaut-validation")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.4")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.0")
 
-    //Snyk fixes
-    implementation("org.apache.kafka:kafka-clients:3.3.1")
+    implementation("org.apache.kafka:kafka-clients:3.8.0")
 
-    api(platform("com.google.cloud:libraries-bom:26.1.3"))
+    runtimeOnly("org.yaml:snakeyaml")
+
+    api(platform("com.google.cloud:libraries-bom:26.48.0"))
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
     implementation("io.micronaut.micrometer:micronaut-micrometer-core")
@@ -60,20 +63,19 @@ application {
     mainClass.set("no.nav.arbeidsplassen.stihibi.Application")
 }
 java {
-    sourceCompatibility = JavaVersion.toVersion("17")
+    sourceCompatibility = JavaVersion.toVersion("21")
 }
-
 
 tasks {
     compileKotlin {
-        kotlinOptions {
-            jvmTarget = "17"
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
             javaParameters = true
         }
     }
     compileTestKotlin {
-        kotlinOptions {
-            jvmTarget = "17"
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
             javaParameters = true
         }
     }
