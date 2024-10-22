@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.0.21"
+    kotlin("jvm") version "2.0.21"
     id("com.google.devtools.ksp") version "2.0.21-1.0.25"
-    id("com.gradleup.shadow") version "8.3.2"
+    id("com.gradleup.shadow") version "8.3.3"
     id("io.micronaut.application") version "4.4.2"
     id("org.jetbrains.kotlin.plugin.allopen") version "2.0.21"
 }
@@ -11,9 +11,12 @@ plugins {
 version = "0.1"
 group "no.nav.arbeidsplassen.stihibi"
 
-val kotlinVersion= project.properties["kotlinVersion"]
-val micronautKafkaVersion= project.properties["micronautKafkaVersion"]
-val logbackEncoderVersion= project.properties["logbackEncoderVersion"]
+application {
+    mainClass.set("no.nav.arbeidsplassen.stihibi.ApplicationKt")
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("21")
+}
 
 repositories {
     mavenLocal()
@@ -30,7 +33,57 @@ micronaut {
     }
 }
 
+tasks {
+    compileKotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+            javaParameters = true
+        }
+    }
+    compileTestKotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_21)
+            javaParameters = true
+        }
+    }
+    test {
+        exclude("**/*IT.class")
+    }
+}
+
+tasks.named("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
+    archiveFileName.set("stihibi-$version-all.jar")
+    mergeServiceFiles()
+}
+
+val kotlinVersion = project.properties["kotlinVersion"]
+val micronautKafkaVersion = project.properties["micronautKafkaVersion"]
+val logbackEncoderVersion = project.properties["logbackEncoderVersion"]
+val javalinVersion = "6.3.0"
+val micrometerVersion = "1.13.6"
+val jacksonVersion = "2.18.0"
+val tokenSupportVersion = "5.0.5"
+
 dependencies {
+    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
+    implementation("io.javalin:javalin:$javalinVersion")
+    implementation("io.javalin:javalin-micrometer:$javalinVersion")
+    implementation("org.eclipse.jetty:jetty-util")
+    implementation("io.micrometer:micrometer-core:$micrometerVersion")
+    implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
+    implementation("io.prometheus:simpleclient_common:0.16.0")
+
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+
+    implementation("no.nav.security:token-validation-core:$tokenSupportVersion")
+    implementation("no.nav.security:token-client-core:$tokenSupportVersion")
+
+    implementation("ch.qos.logback:logback-classic:1.5.11")
+    implementation("net.logstash.logback:logstash-logback-encoder:8.0")
+
+    // gamle dependencies
     annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
     implementation("io.micronaut.validation:micronaut-validation")
     implementation("io.micronaut:micronaut-http-client")
@@ -57,30 +110,5 @@ dependencies {
 
     testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-}
-
-application {
-    mainClass.set("no.nav.arbeidsplassen.stihibi.Application")
-}
-java {
-    sourceCompatibility = JavaVersion.toVersion("21")
-}
-
-tasks {
-    compileKotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-            javaParameters = true
-        }
-    }
-    compileTestKotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
-            javaParameters = true
-        }
-    }
-    test {
-        exclude("**/*IT.class")
-    }
 }
 
