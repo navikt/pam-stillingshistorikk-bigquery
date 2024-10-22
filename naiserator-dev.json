@@ -1,5 +1,6 @@
 {
   "ingress": ["https://pam-stihibi.intern.dev.nav.no", "https://stillingshistorikk.intern.dev.nav.no"],
+  "azure_ad_tenant": "trygdeetaten.no",
   "adlistener_group_id": "stihibi_20210817",
   "adlistener_topic": "teampam.stilling-historikk",
   "adlistener_enabled": "true",

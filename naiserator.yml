@@ -47,6 +47,16 @@ spec:
   {{#each ingress as |url|}}
      - {{url}}
   {{/each}}
+  tokenx:
+    enabled: true
+  azure:
+    application:
+      enabled: true
+      tenant: {{ azure_ad_tenant }}
+      allowAllUsers: true
+      claims:
+        extra:
+          - "NAVident"
   filesFrom:
     - secret: pam-stihibi-credentials
       mountPath: /var/run/secrets/credentials/pam-stihibi
