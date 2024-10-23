@@ -11,11 +11,10 @@ import java.time.LocalDateTime
 @Singleton
 class BigQueryService(
     private val adSchemaTableDefinition: AdSchemaTableDefinition,
+    private val bq: BigQuery,
     private val objectMapper: ObjectMapper
 ) {
 
-
-    private val bq = BigQueryOptions.getDefaultInstance().service
     private val tableId: TableId = TableId.of(adSchemaTableDefinition.dataSet, adSchemaTableDefinition.tableNameV1)
     private val tableFNAME = "${bq.options.projectId}.${tableId.dataset}.${tableId.table}"
 
@@ -86,7 +85,7 @@ class BigQueryService(
         return results.iterateAll().map { avvisning ->
             Avvisning(
                 adUuid = avvisning["adUuid"].value.toString(),
-                remarks = avvisning["remarks"].value?.let { objectMapper.readValue<List<RemarkType>>(it.toString())},
+                remarks = avvisning["remarks"].value?.let { objectMapper.readValue<List<RemarkType>>(it.toString()) },
                 reportee = avvisning["reportee"].value?.toString(),
                 avvist_tidspunkt = LocalDateTime.parse(avvisning["avvist_tidspunkt"].value.toString())
             )

@@ -63,6 +63,7 @@ val javalinVersion = "6.3.0"
 val micrometerVersion = "1.13.6"
 val jacksonVersion = "2.18.0"
 val tokenSupportVersion = "5.0.5"
+val testContainersVersion = "1.20.2"
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -82,6 +83,11 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:1.5.11")
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
+
+    testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
+    testImplementation("org.testcontainers:gcloud:$testContainersVersion")
+    implementation("org.testcontainers:testcontainers:$testContainersVersion")
+    implementation("org.testcontainers:gcloud:$testContainersVersion")
 
     // gamle dependencies
     annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
