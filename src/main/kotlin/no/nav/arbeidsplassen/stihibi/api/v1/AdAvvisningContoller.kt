@@ -1,27 +1,28 @@
 package no.nav.arbeidsplassen.stihibi.api.v1
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.javalin.Javalin
 import io.javalin.http.Context
-import no.nav.arbeidsplassen.stihibi.Avvisning
 import no.nav.arbeidsplassen.stihibi.BigQueryService
 import no.nav.arbeidsplassen.stihibi.sikkerhet.Rolle
 import org.slf4j.LoggerFactory
 
 class AdAvvisningContoller(
-    private val bigQueryService: BigQueryService
+    private val bigQueryService: BigQueryService,
+    private val objectMapper: ObjectMapper
 ) {
     companion object {
         private val LOG = LoggerFactory.getLogger(AdAvvisningContoller::class.java)
     }
 
     fun setupRoutes(javalin: Javalin) {
-        javalin.get("/api/v1/ads/avvisning", {hentAvvisteStillinger()}, Rolle.UNPROTECTED)
+        javalin.get("/api/v1/ads/avvisning", {hentAvvisteStillinger(it)}, Rolle.UNPROTECTED)
         javalin.exception(Exception::class.java) { e, ctx -> håndterFeilmelding(e, ctx) }
     }
 
-    fun hentAvvisteStillinger(): List<Avvisning> {
+    fun hentAvvisteStillinger(ctx: Context) {
         LOG.info("Henter alle avvisninger det siste året")
-        return bigQueryService.queryAvvisning()
+        ctx.result(objectMapper.writeValueAsString(bigQueryService.queryAvvisning()))
     }
 
     fun håndterFeilmelding(e: Exception, ctx: Context) {

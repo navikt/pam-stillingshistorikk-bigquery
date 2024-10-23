@@ -60,5 +60,5 @@ open class ApplicationContext(envInn: Map<String, String>) {
     private val bigQueryService by lazy {
         BigQueryService(adSchemaTableDefinition, bigQuery, objectMapper)
     }
-    val adAvvisningController by lazy { AdAvvisningContoller(bigQueryService) }
+    val adAvvisningController by lazy { AdAvvisningContoller(bigQueryService, objectMapper) }
 }
