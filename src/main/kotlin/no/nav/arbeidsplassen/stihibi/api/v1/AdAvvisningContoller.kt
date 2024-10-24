@@ -3,6 +3,7 @@ package no.nav.arbeidsplassen.stihibi.api.v1
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.javalin.Javalin
 import io.javalin.http.Context
+import io.javalin.http.HttpStatus
 import no.nav.arbeidsplassen.stihibi.BigQueryService
 import no.nav.arbeidsplassen.stihibi.sikkerhet.Rolle
 import org.slf4j.LoggerFactory
@@ -27,6 +28,6 @@ class AdAvvisningContoller(
 
     fun håndterFeilmelding(e: Exception, ctx: Context) {
         LOG.error("Error handling request ${ctx.url()}", e)
-        TODO("Håndter feil")
+        ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType("text/plain").result("An error occurred while processing your request.")
     }
 }
