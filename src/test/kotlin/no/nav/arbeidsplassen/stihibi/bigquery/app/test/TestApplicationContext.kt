@@ -4,12 +4,22 @@ import no.nav.arbeidsplassen.stihibi.ApplicationContext
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.testcontainers.containers.BigQueryEmulatorContainer
+import org.testcontainers.containers.wait.strategy.Wait
 
 /*
  * Application context som kan brukes i tester, denne inkluderer en egen mock-oauth2-server
  */
 class TestApplicationContext(
     private val localEnv: MutableMap<String, String>,
+    val localBigQuery: BigQueryEmulatorContainer = BigQueryEmulatorContainer("ghcr.io/goccy/bigquery-emulator:0.6.5")
+        .waitingFor(Wait.defaultWaitStrategy())
+        .apply { start() }
+        .also { container ->
+        localEnv["BIGQUERY_PROJECT_ID"] = container.projectId
+        localEnv["BIGQUERY_ENDPOINT"] = container.emulatorHttpEndpoint
+        println("Started BigQuery Emulator on ${container.emulatorHttpEndpoint} with pid: ${container.projectId}")
+    }
 //    val localKafka : Any = KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.3.2"))
 //        .withKraft()
 //        .waitingFor(Wait.defaultWaitStrategy())
