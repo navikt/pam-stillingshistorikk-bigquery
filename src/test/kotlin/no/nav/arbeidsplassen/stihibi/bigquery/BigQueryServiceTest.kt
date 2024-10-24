@@ -14,7 +14,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import java.io.File
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class BigQueryServiceTest : TestRunningApplication() {
@@ -22,8 +21,8 @@ class BigQueryServiceTest : TestRunningApplication() {
     private lateinit var adSchemaTableDefinition: AdSchemaTableDefinition
     private lateinit var bigQuery: BigQuery
     private lateinit var bigQueryService: BigQueryService
-    private val testDataFil = File("src/test/resources/stihibi-dummy-data.json")
-    private val stillingerJSON = appCtx.objectMapper.readValue(testDataFil, JsonNode::class.java)
+    private val testData = javaClass.getResourceAsStream("/stihibi-dummy-data.json")
+    private val stillingerJSON = appCtx.objectMapper.readValue(testData, JsonNode::class.java)
 
     @BeforeAll
     fun init() {
