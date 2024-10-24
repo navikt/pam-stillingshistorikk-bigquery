@@ -84,10 +84,12 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.11")
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
 
+    testImplementation(kotlin("test"))
+    testImplementation("no.nav.security:mock-oauth2-server:2.0.0")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:gcloud:$testContainersVersion")
-    implementation("org.testcontainers:testcontainers:$testContainersVersion")
-    implementation("org.testcontainers:gcloud:$testContainersVersion")
+    testImplementation("org.testcontainers:kafka:$testContainersVersion")
+    testImplementation("org.assertj:assertj-core:3.26.3")
 
     // gamle dependencies
     annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
