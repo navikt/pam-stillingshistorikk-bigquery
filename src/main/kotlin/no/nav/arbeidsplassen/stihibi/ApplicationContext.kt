@@ -17,6 +17,7 @@ import io.micrometer.prometheusmetrics.PrometheusConfig
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
 import no.nav.arbeidsplassen.stihibi.api.v1.AdAvvisningContoller
 import no.nav.arbeidsplassen.stihibi.api.v1.AdHistoryContoller
+import no.nav.arbeidsplassen.stihibi.api.v1.AdministrationTimeController
 import no.nav.arbeidsplassen.stihibi.config.TokenConfig
 import no.nav.arbeidsplassen.stihibi.nais.HealthService
 import no.nav.arbeidsplassen.stihibi.nais.NaisController
@@ -59,4 +60,5 @@ open class ApplicationContext(envInn: Map<String, String>) {
     }
     val adAvvisningController by lazy { AdAvvisningContoller(bigQueryService, objectMapper) }
     val adHistoryContoller by lazy { AdHistoryContoller(bigQueryService, objectMapper) }
+    val administrationTimeController by lazy { AdministrationTimeController(bigQueryService) }
 }

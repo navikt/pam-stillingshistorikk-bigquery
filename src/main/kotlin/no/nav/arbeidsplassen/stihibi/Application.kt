@@ -44,6 +44,7 @@ private fun ApplicationContext.setupAllRoutes(javalin: Javalin) {
     naisController.setupRoutes(javalin)
     adAvvisningController.setupRoutes(javalin)
     adHistoryContoller.setupRoutes(javalin)
+    administrationTimeController.setupRoutes(javalin)
 }
 
 //private fun ApplicationContext.startProsesserOgLyttere() {
