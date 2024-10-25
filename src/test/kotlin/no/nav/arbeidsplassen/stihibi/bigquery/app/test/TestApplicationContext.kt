@@ -1,5 +1,9 @@
 package no.nav.arbeidsplassen.stihibi.bigquery.app.test
 
+import com.google.cloud.NoCredentials
+import com.google.cloud.bigquery.BigQuery
+import com.google.cloud.bigquery.BigQueryOptions
+import com.google.cloud.bigquery.DatasetInfo
 import no.nav.arbeidsplassen.stihibi.ApplicationContext
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import org.slf4j.Logger
@@ -39,5 +43,19 @@ class TestApplicationContext(
 
         log.info("Mock Oauth2 server azuread well known url: ${server.wellKnownUrl("azuread")}")
         log.info("Mock Oauth2 server tokenx well known url: ${server.wellKnownUrl("tokenx")}")
+    }
+
+    override val bigQuery: BigQuery by lazy {
+        BigQueryOptions.newBuilder()
+            .setProjectId(localEnv["BIGQUERY_PROJECT_ID"])
+            .setHost(localEnv["BIGQUERY_ENDPOINT"])
+            .setLocation(localEnv["BIGQUERY_ENDPOINT"])
+            .setCredentials(NoCredentials.getInstance())
+            .build()
+            .service
+            .also { bigQuery ->
+                // Oppretter dataset for den lokale instansen
+                bigQuery.create(DatasetInfo.of(adSchemaTableDefinition.dataSet))
+            }
     }
 }
