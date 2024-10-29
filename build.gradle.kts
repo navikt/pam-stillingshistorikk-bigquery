@@ -21,6 +21,7 @@ java {
 repositories {
     mavenLocal()
     mavenCentral()
+    maven("https://packages.confluent.io/maven/")
     maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
 }
 
@@ -81,6 +82,10 @@ dependencies {
     implementation("no.nav.security:token-validation-core:$tokenSupportVersion")
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
 
+    implementation("org.apache.kafka:kafka-clients:3.8.0")
+    implementation("org.apache.avro:avro:1.12.0")
+    implementation("io.confluent:kafka-avro-serializer:7.7.1")
+
     implementation("ch.qos.logback:logback-classic:1.5.11")
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
 
@@ -101,11 +106,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     implementation("io.micronaut.kafka:micronaut-kafka:${micronautKafkaVersion}")
     implementation("io.micronaut:micronaut-jackson-databind")
-    runtimeOnly("ch.qos.logback:logback-classic")
-    runtimeOnly("net.logstash.logback:logstash-logback-encoder:${logbackEncoderVersion}")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.0")
-
-    implementation("org.apache.kafka:kafka-clients:3.8.0")
 
     runtimeOnly("org.yaml:snakeyaml")
 

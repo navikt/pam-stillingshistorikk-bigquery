@@ -19,6 +19,9 @@ import no.nav.arbeidsplassen.stihibi.api.v1.AdAvvisningContoller
 import no.nav.arbeidsplassen.stihibi.api.v1.AdHistoryContoller
 import no.nav.arbeidsplassen.stihibi.api.v1.AdministrationTimeController
 import no.nav.arbeidsplassen.stihibi.config.TokenConfig
+import no.nav.arbeidsplassen.stihibi.kafka.KafkaConfig
+import no.nav.arbeidsplassen.stihibi.kafka.KafkaRapidJsonListener
+import no.nav.arbeidsplassen.stihibi.kafka.KafkaRapidListener
 import no.nav.arbeidsplassen.stihibi.nais.HealthService
 import no.nav.arbeidsplassen.stihibi.nais.NaisController
 import java.net.http.HttpClient
@@ -51,6 +54,10 @@ open class ApplicationContext(envInn: Map<String, String>) {
 
     val healthService = HealthService()
 
+    val kafkaConfig = KafkaConfig(env)
+
+    val kafkaLyttere by lazy { kafkaLyttere() }
+
     val naisController = NaisController(healthService, prometheusRegistry)
 
     open val bigQuery: BigQuery by lazy { BigQueryOptions.getDefaultInstance().service }
@@ -61,4 +68,15 @@ open class ApplicationContext(envInn: Map<String, String>) {
     val adAvvisningController by lazy { AdAvvisningContoller(bigQueryService, objectMapper) }
     val adHistoryContoller by lazy { AdHistoryContoller(bigQueryService, objectMapper) }
     val administrationTimeController by lazy { AdministrationTimeController(bigQueryService) }
+
+    private fun kafkaLyttere(): List<KafkaRapidListener<*>> {
+        val lyttere = mutableListOf<KafkaRapidListener<*>>()
+
+        val adTopicConsumer by lazy { AdTopicListener(bigQueryService, env.getValue("STILLING-HISTORIKK_TOPIC"), objectMapper) }
+        val adTopicConsumerConfig = kafkaConfig.kafkaJsonConsumer(env.getValue("STILLING-HISTORIKK_TOPIC"), env.getValue("STIHIBI_GROUP_ID"))
+        val adTopicListener by lazy { KafkaRapidJsonListener(adTopicConsumerConfig, adTopicConsumer, healthService) }
+        lyttere.add(adTopicListener)
+
+        return lyttere
+    }
 }

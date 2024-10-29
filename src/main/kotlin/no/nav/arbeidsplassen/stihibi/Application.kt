@@ -35,7 +35,7 @@ fun ApplicationContext.startApp(): Javalin {
     )
 
     setupAllRoutes(javalin)
-//    startProsesserOgLyttere()
+    startProsesserOgLyttere()
 
     return javalin
 }
@@ -47,11 +47,11 @@ private fun ApplicationContext.setupAllRoutes(javalin: Javalin) {
     administrationTimeController.setupRoutes(javalin)
 }
 
-//private fun ApplicationContext.startProsesserOgLyttere() {
-//    if (env["START_KAFKA_KONSUMENTER"] == "true") {
-//        kafkaLyttere.forEach { lytter -> lytter.startListener() }
-//    }
-//}
+private fun ApplicationContext.startProsesserOgLyttere() {
+    if (env["START_KAFKA_KONSUMENTER"] == "true") {
+        kafkaLyttere.forEach { lytter -> lytter.startListener() }
+    }
+}
 
 fun startJavalin(
     port: Int = 8080,

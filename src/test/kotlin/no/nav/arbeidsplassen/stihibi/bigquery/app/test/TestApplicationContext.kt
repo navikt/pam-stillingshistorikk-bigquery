@@ -10,6 +10,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.BigQueryEmulatorContainer
 import org.testcontainers.containers.wait.strategy.Wait
+import org.testcontainers.kafka.ConfluentKafkaContainer
 
 /*
  * Application context som kan brukes i tester, denne inkluderer en egen mock-oauth2-server
@@ -23,14 +24,13 @@ class TestApplicationContext(
         localEnv["BIGQUERY_PROJECT_ID"] = container.projectId
         localEnv["BIGQUERY_ENDPOINT"] = container.emulatorHttpEndpoint
         println("Started BigQuery Emulator on ${container.emulatorHttpEndpoint} with pid: ${container.projectId}")
-    }
-//    val localKafka : Any = KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.3.2"))
-//        .withKraft()
-//        .waitingFor(Wait.defaultWaitStrategy())
-//        .apply { start() }
-//        .also { localConfig ->
-//            localEnv["KAFKA_BROKERS"] = localConfig.bootstrapServers
-//        }
+    },
+    val localKafka: Any = ConfluentKafkaContainer("confluentinc/cp-kafka:7.7.0")
+        .waitingFor(Wait.defaultWaitStrategy())
+        .apply { start() }
+        .also { localConfig ->
+            localEnv["KAFKA_BROKERS"] = localConfig.bootstrapServers
+        }
 ) : ApplicationContext(localEnv) {
 
     private val log: Logger = LoggerFactory.getLogger("LocalApplicationContext")
