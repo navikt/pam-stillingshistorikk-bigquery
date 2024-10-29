@@ -1,0 +1,93 @@
+{
+  "id": 123456,
+  "uuid": "d2cc0e00-0df6-48f8-b430-86ec23c5735d",
+  "createdBy": "pam-ad",
+  "updatedBy": "pam-ad",
+  "created": "2024-05-08T06:00:50.306669",
+  "updated": "2024-05-30T06:00:46.925167",
+  "contactList": [
+    {
+      "name": "Tom Stang",
+      "email": "tom@stangbil.no"
+    }
+  ],
+  "mediaList": [],
+  "locationList": [
+    {
+      "postalCode": "0300",
+      "country": "NORGE",
+      "county": "OSLO",
+      "municipal": "OSLO",
+      "city": "OSLO",
+      "latitude": "59.9346848",
+      "longitude": "10.7182127"
+    }
+  ],
+  "properties": {
+    "extent": "Heltid",
+    "logomain": "https://example.com/image",
+    "occupation": "Sjåfør",
+    "positioncount": "1",
+    "engagementtype": "Annet",
+    "employerdescription": "<p>Vi drifter busser, trikker, og bil. Tom Stang AS har hovedkontor i Oslo.</p><br />\n",
+    "_score": "[{\"name\":\"category\",\"value\":-50},{\"name\":\"employer\",\"value\":-50},{\"name\":\"jobarrangement\",\"value\":-10},{\"name\":\"jobpercentage\",\"value\":-10},{\"name\":\"keywords\",\"value\":-10}]",
+    "classification_styrk08_code": "1324",
+    "sourcecreated": "2024-05-07T08:29:11Z",
+    "applicationurl": "https://example.com/Application",
+    "employer": "Tom Stang AS",
+    "sector": "Ikke oppgitt",
+    "applicationdue": "2024-06-07",
+    "address": "0300 Oslo",
+    "jobtitle": "Ambulerende sjåfør til våre biler",
+    "author": "Tom Stang AS",
+    "classification_styrk08_score": "0.5882",
+    "adtext": "<p>Tom Stang AS har ledig stilling som ambulerende sjåfør på våre ferger.</p> \n<p> </p> \n<p>Vår visjon er «La oss dra sammen», og våre kjerneverdier er sikkerhet, kvalitet og miljø.</p> \n   Arbeidsoppgaver  \n<ul><li>drift og vedlikehold av maskindepartement</li><li>saksbehandling og oppfølging av kvalitetssystem for fartøyet</li><li>bunkring</li></ul>   \n<br /> Kvalifikasjoner \n<ul><li>kompetansesertifikat M3 (regel III/3).</li><li>videregående sikkerhetskurs</li><li>passasjer og kriserhåndteringskurs (ikke eldre enn 5 år)</li><li>høyspentkurs</li><li>FSE</li><li>gode norske eller skandinaviske språkkunnskaper – både skriftlige og muntlige</li></ul>   Vi tilbyr \n<ul><li>lønn iht. tariffavtale/fastlønnsavtale</li><li>skiftordning</li></ul> \n<p>Tiltredelse snarest. </p> \n<p>Ta gjerne kontakt med oss dersom du har spørsmål om stillingen.</p>\n",
+    "logolisting": "60/0a/600a5125dd2db5c61da15d99c24f3fc2",
+    "sourceurl": "https://example.com/Application",
+    "sourceupdated": "2024-05-30T05:05:40Z",
+    "location": "Oslo",
+    "classification_esco_code": "http://data.europa.eu/esco/isco/C1324",
+    "classification_input_source": "jobtitle",
+    "_scoretotal": "-130"
+  },
+  "title": "Ambulerende maskinsjef til våre biler",
+  "status": "REJECTED",
+  "privacy": "SHOW_ALL",
+  "source": "AMEDIA",
+  "medium": "AMEDIA",
+  "reference": "4370162",
+  "published": "2024-05-09T06:00:00.965718",
+  "expires": "2024-06-07T00:00:00",
+  "categoryList": [
+    {
+      "id": 2291045,
+      "code": "1324",
+      "categoryType": "STYRK08",
+      "name": "Ledere av logistikk og transport mv.",
+      "score": 0.59
+    },
+    {
+      "id": 2291044,
+      "code": "http://data.europa.eu/esco/isco/C1324",
+      "categoryType": "ESCO",
+      "name": "Vedlikeholdssjef transport og kommunikasjon",
+      "score": 0.59
+    },
+    {
+      "id": 2291043,
+      "code": "361808",
+      "categoryType": "JANZZ",
+      "name": "Vedlikeholdssjef transport og kommunikasjon",
+      "score": 0.59
+    }
+  ],
+  "businessName": "Tom Stang AS",
+  "administration": {
+    "status": "DONE",
+    "comments": "Duplicate of d665586d-72b7-4cf8-99e2-90c23332b36a",
+    "reportee": "Marve Almar Fleksnes",
+    "remarks": [
+      "DUPLICATE"
+    ]
+  }
+}
