@@ -76,6 +76,10 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
     implementation("io.prometheus:simpleclient_common:0.16.0")
 
+    api(platform("com.google.cloud:libraries-bom:26.49.0"))
+    implementation("com.google.cloud:google-cloud-bigquery")
+    implementation("com.google.cloud:google-cloud-bigquerystorage")
+
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
@@ -95,29 +99,5 @@ dependencies {
     testImplementation("org.testcontainers:gcloud:$testContainersVersion")
     testImplementation("org.testcontainers:kafka:$testContainersVersion")
     testImplementation("org.assertj:assertj-core:3.26.3")
-
-    // gamle dependencies
-    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
-    implementation("io.micronaut.validation:micronaut-validation")
-    implementation("io.micronaut:micronaut-http-client")
-    implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("javax.annotation:javax.annotation-api")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-    implementation("io.micronaut.kafka:micronaut-kafka:${micronautKafkaVersion}")
-    implementation("io.micronaut:micronaut-jackson-databind")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.18.0")
-
-    runtimeOnly("org.yaml:snakeyaml")
-
-    api(platform("com.google.cloud:libraries-bom:26.48.0"))
-    implementation("com.google.cloud:google-cloud-bigquery")
-    implementation("com.google.cloud:google-cloud-bigquerystorage")
-    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
-    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
-    implementation("io.micronaut:micronaut-management")
-
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
 }
 

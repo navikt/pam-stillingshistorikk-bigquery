@@ -3,12 +3,10 @@ package no.nav.arbeidsplassen.stihibi
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.cloud.bigquery.*
-import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-@Singleton
 class BigQueryService(
     private val adSchemaTableDefinition: AdSchemaTableDefinition,
     private val bq: BigQuery,
