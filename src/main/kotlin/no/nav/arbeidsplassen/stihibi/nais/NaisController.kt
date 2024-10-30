@@ -17,7 +17,7 @@ class NaisController(
             Rolle.UNPROTECTED
         )
         javalin.get(
-            "/internal/prometheus",
+            "/prometheus",
             { it.contentType(TextFormat.CONTENT_TYPE_004).result(prometheusMeterRegistry.scrape()) },
             Rolle.UNPROTECTED
         )
