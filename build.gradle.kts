@@ -4,8 +4,7 @@ plugins {
     kotlin("jvm") version "2.0.21"
     id("com.google.devtools.ksp") version "2.0.21-1.0.25"
     id("com.gradleup.shadow") version "8.3.3"
-    id("io.micronaut.application") version "4.4.2"
-    id("org.jetbrains.kotlin.plugin.allopen") version "2.0.21"
+    application
 }
 
 version = "0.1"
@@ -14,6 +13,7 @@ group "no.nav.arbeidsplassen.stihibi"
 application {
     mainClass.set("no.nav.arbeidsplassen.stihibi.ApplicationKt")
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
 }
@@ -23,15 +23,6 @@ repositories {
     mavenCentral()
     maven("https://packages.confluent.io/maven/")
     maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
-}
-
-micronaut {
-    runtime("netty")
-    testRuntime("junit5")
-    processing {
-        incremental(true)
-        annotations("no.nav.arbeidsplassen.stihibi.*")
-    }
 }
 
 tasks {
@@ -48,6 +39,7 @@ tasks {
         }
     }
     test {
+        useJUnitPlatform()
         exclude("**/*IT.class")
     }
 }
@@ -57,9 +49,6 @@ tasks.named("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
     mergeServiceFiles()
 }
 
-val kotlinVersion = project.properties["kotlinVersion"]
-val micronautKafkaVersion = project.properties["micronautKafkaVersion"]
-val logbackEncoderVersion = project.properties["logbackEncoderVersion"]
 val javalinVersion = "6.3.0"
 val micrometerVersion = "1.13.6"
 val jacksonVersion = "2.18.0"
