@@ -1,6 +1,5 @@
 package no.nav.arbeidsplassen.stihibi.bigquery.app.local
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.google.cloud.NoCredentials
 import com.google.cloud.bigquery.*
 import no.nav.arbeidsplassen.stihibi.*
@@ -40,19 +39,6 @@ class LocalApplicationContext(
                 // Oppretter dataset for den lokale instansen
                 val adSchemaTD = adSchemaTableDefinition
                 bigQuery.create(DatasetInfo.of(adSchemaTD.dataSet))
-                bigQuery.create(
-                    TableInfo.of(
-                        TableId.of(adSchemaTD.dataSet, adSchemaTD.tableNameV1),
-                        StandardTableDefinition.of(adSchemaTD.schemaV1)
-                    )
-                )
-                val testData = javaClass.getResourceAsStream("/stillinger-behandlet-av-nss.json")
-                val stillingerJSON = objectMapper.readValue(testData, JsonNode::class.java)
-                val request = InsertAllRequest.newBuilder(TableId.of(adSchemaTD.dataSet, adSchemaTD.tableNameV1))
-                stillingerJSON.map { rad ->
-                    request.addRow(adSchemaTD.toRowDefinition((objectMapper.readValue(rad.get("json").asText(), AdTransport::class.java)), 0, 0, ""))
-                }
-                bigQuery.insertAll(request.build())
             }
     }
 }
