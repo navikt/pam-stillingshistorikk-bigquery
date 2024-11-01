@@ -20,8 +20,8 @@ import no.nav.arbeidsplassen.stihibi.api.v1.AdHistoryContoller
 import no.nav.arbeidsplassen.stihibi.api.v1.AdministrationTimeController
 import no.nav.arbeidsplassen.stihibi.config.TokenConfig
 import no.nav.arbeidsplassen.stihibi.kafka.KafkaConfig
-import no.nav.arbeidsplassen.stihibi.kafka.KafkaRapidJsonListener
-import no.nav.arbeidsplassen.stihibi.kafka.KafkaRapidListener
+import no.nav.arbeidsplassen.stihibi.kafka.KafkaJsonListener
+import no.nav.arbeidsplassen.stihibi.kafka.KafkaListener
 import no.nav.arbeidsplassen.stihibi.nais.HealthService
 import no.nav.arbeidsplassen.stihibi.nais.NaisController
 import java.net.http.HttpClient
@@ -60,6 +60,8 @@ open class ApplicationContext(envInn: Map<String, String>) {
 
     val naisController = NaisController(healthService, prometheusRegistry)
 
+    val statusController by lazy { StatusController(kafkaLyttere) }
+
     open val bigQuery: BigQuery by lazy { BigQueryOptions.getDefaultInstance().service }
     val adSchemaTableDefinition = AdSchemaTableDefinition(objectMapper)
     private val bigQueryService by lazy {
@@ -69,12 +71,12 @@ open class ApplicationContext(envInn: Map<String, String>) {
     val adHistoryContoller by lazy { AdHistoryContoller(bigQueryService, objectMapper) }
     val administrationTimeController by lazy { AdministrationTimeController(bigQueryService) }
 
-    private fun kafkaLyttere(): List<KafkaRapidListener<*>> {
-        val lyttere = mutableListOf<KafkaRapidListener<*>>()
+    private fun kafkaLyttere(): List<KafkaListener<*>> {
+        val lyttere = mutableListOf<KafkaListener<*>>()
 
         val adTopicConsumer by lazy { AdTopicListener(bigQueryService, env.getValue("STILLING-HISTORIKK_TOPIC"), objectMapper) }
         val adTopicConsumerConfig = kafkaConfig.kafkaJsonConsumer(env.getValue("STILLING-HISTORIKK_TOPIC"), env.getValue("STIHIBI_GROUP_ID"))
-        val adTopicListener by lazy { KafkaRapidJsonListener(adTopicConsumerConfig, adTopicConsumer, healthService) }
+        val adTopicListener by lazy { KafkaJsonListener(adTopicConsumerConfig, adTopicConsumer, healthService) }
         lyttere.add(adTopicListener)
 
         return lyttere

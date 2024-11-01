@@ -1,36 +1,54 @@
 package no.nav.arbeidsplassen.stihibi.kafka
 
 import no.nav.arbeidsplassen.stihibi.nais.HealthService
-import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.clients.consumer.OffsetAndMetadata
 import org.apache.kafka.common.KafkaException
 import org.apache.kafka.common.TopicPartition
 import org.apache.kafka.common.errors.AuthorizationException
+import org.apache.kafka.common.errors.SerializationException
 import org.intellij.lang.annotations.Language
 import org.slf4j.LoggerFactory
 import java.time.Duration
 import java.time.LocalDateTime
+import java.util.concurrent.BlockingQueue
+import java.util.concurrent.LinkedBlockingQueue
 
-abstract class KafkaRapidListener<T> {
+abstract class KafkaListener<T> {
     companion object {
-        private val LOG = LoggerFactory.getLogger(KafkaRapidListener::class.java)
+        private val LOG = LoggerFactory.getLogger(KafkaListener::class.java)
     }
 
     abstract val healthService: HealthService
     abstract val kafkaConsumer: KafkaConsumer<String?, T?>
 
-    abstract fun startListener() : Thread
-    abstract fun handleRecord(record: ConsumerRecord<String?, T?>): Unit?
+    abstract fun startLytter(): Thread
+    abstract fun handleRecords(records: ConsumerRecords<String?, T?>): Unit?
 
-    fun startListenerInternal() {
-        LOG.info("Starter Kafka ad-rapid listener")
+    private val kontrollKø: BlockingQueue<KafkaState> = LinkedBlockingQueue()
+
+    fun startInternLytter() {
+        LOG.info("Starter Kafka stihibi lytter")
         var records: ConsumerRecords<String?, T?>?
 
         while (healthService.isHealthy()) {
             var currentPositions = mutableMapOf<TopicPartition, Long>()
+            val status = kontrollKø.poll()
             try {
+                if (status != null)
+                    when (status) {
+                        KafkaState.PAUSE -> {
+                            kafkaConsumer.pause(kafkaConsumer.assignment())
+                            LOG.info("Pauset Kafka stihibi lytter")
+                        }
+
+                        KafkaState.GJENOPPTA -> {
+                            kafkaConsumer.resume(kafkaConsumer.assignment())
+                            LOG.info("Gjennopptar Kafka stihibi lytter")
+                        }
+                    }
+
                 records = kafkaConsumer.poll(Duration.ofSeconds(10))
                 if (records.count() > 0) {
                     currentPositions = records
@@ -39,16 +57,16 @@ abstract class KafkaRapidListener<T> {
                         .toMutableMap()
 
                     LOG.info("Leste ${records.count()} rader. Keys: {}", records.mapNotNull { it.key() }.joinToString())
-                    records.forEach { record ->
-                        handleRecord(record)
-                        currentPositions[TopicPartition(record.topic(), record.partition())] = record.offset() + 1
-                    }
+                    handleRecords(records)
                 }
             } catch (e: AuthorizationException) {
                 LOG.error("AuthorizationException i consumerloop, restarter app ${e.message}", e)
                 healthService.addUnhealthyVote()
             } catch (ke: KafkaException) {
-                LOG.error("KafkaException occurred in consumeLoop ${ke.message}", ke)
+                LOG.error("KafkaException i consumerloop, restarter app ${ke.message}", ke)
+                healthService.addUnhealthyVote()
+            } catch (e: SerializationException) {
+                LOG.error("SerializationException i consumerloop, restarter app ${e.message}", e)
                 healthService.addUnhealthyVote()
             } catch (e: Exception) {
                 // Catchall - impliserer at vi skal restarte app
@@ -63,10 +81,18 @@ abstract class KafkaRapidListener<T> {
         kafkaConsumer.close()
     }
 
+    fun pauseLytter() = kontrollKø.put(KafkaState.PAUSE)
+    fun gjenopptaLytter() = kontrollKø.put(KafkaState.GJENOPPTA)
+
     private fun offsetMetadata(offset: Long): OffsetAndMetadata {
         val clientId = kafkaConsumer.groupMetadata().groupInstanceId().map { "\"$it\"" }.orElse("null")
+
         @Language("JSON")
         val metadata = """{"time": "${LocalDateTime.now()}","groupInstanceId": $clientId}"""
         return OffsetAndMetadata(offset, metadata)
+    }
+
+    enum class KafkaState {
+        PAUSE, GJENOPPTA
     }
 }

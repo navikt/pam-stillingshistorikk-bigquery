@@ -42,6 +42,7 @@ fun ApplicationContext.startApp(): Javalin {
 
 private fun ApplicationContext.setupAllRoutes(javalin: Javalin) {
     naisController.setupRoutes(javalin)
+    statusController.setupRoutes(javalin)
     adAvvisningController.setupRoutes(javalin)
     adHistoryContoller.setupRoutes(javalin)
     administrationTimeController.setupRoutes(javalin)
@@ -49,7 +50,7 @@ private fun ApplicationContext.setupAllRoutes(javalin: Javalin) {
 
 private fun ApplicationContext.startProsesserOgLyttere() {
     if (env["START_KAFKA_KONSUMENTER"] == "true") {
-        kafkaLyttere.forEach { lytter -> lytter.startListener() }
+        kafkaLyttere.forEach { lytter -> lytter.startLytter() }
     }
 }
 
