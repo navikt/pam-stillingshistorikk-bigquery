@@ -1,0 +1,41 @@
+[
+  {
+    "adUuid": "d2cc0e00-0df6-48f8-b430-86ec23c5735d",
+    "remarks": [
+      "DUPLICATE"
+    ],
+    "reportee": "Marve Almar Fleksnes",
+    "avvist_tidspunkt": "2024-05-30T06:00:46.925167"
+  },
+  {
+    "adUuid": "95b73cb5-ed86-49c4-9aa2-a3242994af7d",
+    "remarks": [
+      "DUPLICATE",
+      "NO_EMPLOYMENT"
+    ],
+    "reportee": "Clark Kent",
+    "avvist_tidspunkt": "2024-05-30T06:00:46.925167"
+  },
+  {
+    "adUuid": "53cecd81-5734-43bd-8397-74d36273a5fb",
+    "remarks": [
+      "UNKNOWN"
+    ],
+    "reportee": "Kjell Aronsen",
+    "avvist_tidspunkt": "2024-05-30T06:00:46.925167"
+  },
+  {
+    "adUuid": "d2cc0e00-0df6-48f8-b430-86ec23c5735e",
+    "remarks": [],
+    "reportee": "Marve Almar Fleksnes",
+    "avvist_tidspunkt": "2024-05-10T06:00:46.925167"
+  },
+  {
+    "adUuid": "d2cc0e00-0df6-48f8-b430-86ec23c5735e",
+    "remarks": [
+      "DUPLICATE"
+    ],
+    "reportee": "Marve Almar Fleksnes",
+    "avvist_tidspunkt": "2024-05-10T07:00:46.925167"
+  }
+]
