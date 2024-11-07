@@ -88,5 +88,6 @@ dependencies {
     testImplementation("org.testcontainers:gcloud:$testContainersVersion")
     testImplementation("org.testcontainers:kafka:$testContainersVersion")
     testImplementation("org.assertj:assertj-core:3.26.3")
+    testImplementation("io.mockk:mockk:1.13.13")
 }
 
