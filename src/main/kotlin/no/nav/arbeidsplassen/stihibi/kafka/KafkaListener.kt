@@ -1,5 +1,6 @@
 package no.nav.arbeidsplassen.stihibi.kafka
 
+import no.nav.arbeidsplassen.stihibi.RowInsertException
 import no.nav.arbeidsplassen.stihibi.nais.HealthService
 import org.apache.kafka.clients.consumer.ConsumerRecords
 import org.apache.kafka.clients.consumer.KafkaConsumer
@@ -26,30 +27,28 @@ abstract class KafkaListener<T> {
     abstract fun startLytter(): Thread
     abstract fun handleRecords(records: ConsumerRecords<String?, T?>): Unit?
 
-    private val kontrollKø: BlockingQueue<KafkaState> = LinkedBlockingQueue()
+    val kontrollKø: BlockingQueue<KafkaState> = LinkedBlockingQueue()
 
     fun startInternLytter() {
         LOG.info("Starter Kafka stihibi lytter")
         var records: ConsumerRecords<String?, T?>?
-
         while (healthService.isHealthy()) {
             var currentPositions = mutableMapOf<TopicPartition, Long>()
-            val status = kontrollKø.poll()
+            val setStatus = kontrollKø.poll()
             try {
-                if (status != null)
-                    when (status) {
+                if (setStatus != null)
+                    when (setStatus) {
                         KafkaState.PAUSE -> {
-                            kafkaConsumer.pause(kafkaConsumer.assignment())
+                            kafkaConsumer.pause(currentPositions.keys)
                             LOG.info("Pauset Kafka stihibi lytter")
                         }
-
                         KafkaState.GJENOPPTA -> {
-                            kafkaConsumer.resume(kafkaConsumer.assignment())
-                            LOG.info("Gjennopptar Kafka stihibi lytter")
+                            kafkaConsumer.resume(currentPositions.keys)
+                            LOG.info("Gjenopptar Kafka stihibi lytter")
                         }
                     }
-
                 records = kafkaConsumer.poll(Duration.ofSeconds(10))
+                LOG.info("Poller Kafka stihibi lytter, antall rader: ${records.count()}")
                 if (records.count() > 0) {
                     currentPositions = records
                         .groupBy { TopicPartition(it.topic(), it.partition()) }
@@ -62,11 +61,14 @@ abstract class KafkaListener<T> {
             } catch (e: AuthorizationException) {
                 LOG.error("AuthorizationException i consumerloop, restarter app ${e.message}", e)
                 healthService.addUnhealthyVote()
+            } catch (e: SerializationException) {
+                LOG.error("SerializationException i consumerloop, restarter app ${e.message}", e)
+                healthService.addUnhealthyVote()
             } catch (ke: KafkaException) {
                 LOG.error("KafkaException i consumerloop, restarter app ${ke.message}", ke)
                 healthService.addUnhealthyVote()
-            } catch (e: SerializationException) {
-                LOG.error("SerializationException i consumerloop, restarter app ${e.message}", e)
+            } catch (e: RowInsertException) {
+                LOG.error("RowInsertException i consumerloop, restarter app ${e.message}", e)
                 healthService.addUnhealthyVote()
             } catch (e: Exception) {
                 // Catchall - impliserer at vi skal restarte app
@@ -77,12 +79,12 @@ abstract class KafkaListener<T> {
                 currentPositions.clear()
             }
         }
-
         kafkaConsumer.close()
     }
 
     fun pauseLytter() = kontrollKø.put(KafkaState.PAUSE)
     fun gjenopptaLytter() = kontrollKø.put(KafkaState.GJENOPPTA)
+    fun harFeilet() = healthService.isHealthy().not()
 
     private fun offsetMetadata(offset: Long): OffsetAndMetadata {
         val clientId = kafkaConsumer.groupMetadata().groupInstanceId().map { "\"$it\"" }.orElse("null")

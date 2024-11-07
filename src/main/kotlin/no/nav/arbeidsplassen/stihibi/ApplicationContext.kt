@@ -20,7 +20,6 @@ import no.nav.arbeidsplassen.stihibi.api.v1.AdHistoryContoller
 import no.nav.arbeidsplassen.stihibi.api.v1.AdministrationTimeController
 import no.nav.arbeidsplassen.stihibi.config.TokenConfig
 import no.nav.arbeidsplassen.stihibi.kafka.KafkaConfig
-import no.nav.arbeidsplassen.stihibi.kafka.KafkaJsonListener
 import no.nav.arbeidsplassen.stihibi.kafka.KafkaListener
 import no.nav.arbeidsplassen.stihibi.nais.HealthService
 import no.nav.arbeidsplassen.stihibi.nais.NaisController
@@ -74,9 +73,9 @@ open class ApplicationContext(envInn: Map<String, String>) {
     private fun kafkaLyttere(): List<KafkaListener<*>> {
         val lyttere = mutableListOf<KafkaListener<*>>()
 
-        val adTopicConsumer by lazy { AdTopicListener(bigQueryService, env.getValue("STILLING-HISTORIKK_TOPIC"), objectMapper) }
-        val adTopicConsumerConfig = kafkaConfig.kafkaJsonConsumer(env.getValue("STILLING-HISTORIKK_TOPIC"), env.getValue("STIHIBI_GROUP_ID"))
-        val adTopicListener by lazy { KafkaJsonListener(adTopicConsumerConfig, adTopicConsumer, healthService) }
+        val topic = env.getValue("STILLING-HISTORIKK_TOPIC")
+        val adTopicConsumerConfig = kafkaConfig.kafkaJsonConsumer(topic, env.getValue("STIHIBI_GROUP_ID"))
+        val adTopicListener by lazy { AdTopicListener(adTopicConsumerConfig, bigQueryService, topic, objectMapper, healthService) }
         lyttere.add(adTopicListener)
 
         return lyttere
