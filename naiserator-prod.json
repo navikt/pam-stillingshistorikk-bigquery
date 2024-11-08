@@ -3,7 +3,7 @@
   "azure_ad_tenant": "nav.no",
   "adlistener_group_id": "stihibi_20210817",
   "adlistener_topic": "teampam.stilling-historikk",
-  "adlistener_enabled": "true",
   "google_cloud_project": "teampam-prod-7da6",
-  "kafka_pool": "nav-prod"
+  "kafka_pool": "nav-prod",
+  "start_kafka_konsumenter": "true"
 }

@@ -65,9 +65,9 @@ spec:
       value: "{{ adlistener_group_id }}"
     - name: ADLISTENER_TOPIC
       value: "{{ adlistener_topic }}"
-    - name: ADLISTENER_ENABLED
-      value: "{{ adlistener_enabled }}"
     - name: GOOGLE_APPLICATION_CREDENTIALS
       value: "/var/run/secrets/credentials/pam-stihibi/secret"
     - name: GOOGLE_CLOUD_PROJECT
       value: "{{ google_cloud_project }}"
+    - name: START_KAFKA_KONSUMENTER
+      value: "{{ start_kafka_konsumenter }}"
