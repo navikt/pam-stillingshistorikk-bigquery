@@ -25,11 +25,11 @@ class AdTopicListener(
 
     override fun handleRecords(records: ConsumerRecords<String?, ByteArray?>) {
         try {
-//            records.forEach { record ->
-//                MDC.put("U", record.key())
-//                val eventId = record.headers().headers("@eventId").firstOrNull()?.let { String(it.value()) }
-//                MDC.put("TraceId", eventId)
-//            }
+            records.forEach { record ->
+                MDC.put("K", record.key())
+                val eventId = record.headers().headers("@eventId").firstOrNull()?.let { String(it.value()) }
+                MDC.put("TraceId", eventId)
+            }
             val response = bigQueryService.sendBatch(
                 ads = records.map { objectMapper.readValue(it.value(), AdTransport::class.java) },
                 offsets = records.map { it.offset() },
