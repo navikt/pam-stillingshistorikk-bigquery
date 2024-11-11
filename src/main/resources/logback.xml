@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <includeMdcKeyName>K</includeMdcKeyName>
-            <includeMdcKeyName>TraceId</includeMdcKeyName>
-        </encoder>
-    </appender>
-
-    <logger name="no.nav" level="INFO" />
-
-    <root level="INFO">
-        <appender-ref ref="stdout_json" />
-    </root>
+    <if condition='isDefined("NAIS_CLUSTER_NAME")'>
+        <then>
+            <include resource="logback-nais.xml"/>
+        </then>
+        <else>
+            <include resource="logback-local.xml"/>
+        </else>
+    </if>
 </configuration>

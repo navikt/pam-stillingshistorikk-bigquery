@@ -1,0 +1,67 @@
+<included scan="true" scanPeriod="30 seconds">
+    <appender name="stdout_json" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator> <!-- defaults to type ch.qos.logback.classic.boolex.JaninoEventEvaluator -->
+                <expression>return logger.endsWith("secure");</expression>
+            </evaluator>
+            <OnMismatch>ACCEPT</OnMismatch>
+            <OnMatch>DENY</OnMatch>
+        </filter>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdcKeyName>TraceId</includeMdcKeyName>
+            <includeMdcKeyName>konsument_id</includeMdcKeyName>
+        </encoder>
+    </appender>
+
+    <appender name="secureLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator> <!-- defaults to type ch.qos.logback.classic.boolex.JaninoEventEvaluator -->
+                <expression>return logger.endsWith("secure");</expression>
+            </evaluator>
+            <OnMismatch>DENY</OnMismatch>
+            <OnMatch>ACCEPT</OnMatch>
+        </filter>
+
+        <file>/secure-logs/secure.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>/secure-logs/secure.log.%i</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>2</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>50MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdcKeyName>TraceId</includeMdcKeyName>
+            <includeMdcKeyName>konsument_id</includeMdcKeyName>
+            <includeMdcKeyName>U</includeMdcKeyName>
+            <includeMdcKeyName>K</includeMdcKeyName>
+        </encoder>
+    </appender>
+
+    <appender name="auditLogger" class="com.papertrailapp.logback.Syslog4jAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%m%n%xEx</pattern>
+        </layout>
+
+        <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.TCPNetSyslogConfig">
+            <!-- remote system to log to -->
+            <host>audit.nais</host>
+            <!-- remote port to log to -->
+            <port>6514</port>
+            <!-- IMPORTANT: Set to your application name. -->
+            <ident>pam-stihibi</ident>
+            <!-- max log message length in bytes -->
+            <maxMessageLength>128000</maxMessageLength>
+        </syslogConfig>
+    </appender>
+
+    <logger level="INFO" name="auditLogger" additivity="false">
+        <appender-ref ref="auditLogger"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="stdout_json"/>
+        <appender-ref ref="secureLog"/>
+    </root>
+</included>
