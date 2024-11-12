@@ -18,6 +18,6 @@ fun main() {
     try {
         localAppCtx.startApp()
     } catch (e: Exception) {
-        log.error("Uventet feil ved oppstart av applikasjon", e)
+        log.error("Uventet feil ved oppstart av applikasjon: ${e.message}", e)
     }
 }

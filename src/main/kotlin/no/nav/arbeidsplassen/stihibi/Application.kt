@@ -24,7 +24,7 @@ fun main() {
         val appContext = ApplicationContext(env)
         appContext.startApp()
     } catch (e: Exception) {
-        log.error("Uventet feil ved oppstart av applikasjon", e)
+        log.error("Uventet feil ved oppstart av applikasjon: ${e.message}", e)
     }
 }
 
