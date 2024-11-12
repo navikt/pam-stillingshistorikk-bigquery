@@ -17,9 +17,15 @@ import org.slf4j.MDC
 import java.util.*
 
 fun main() {
-    val env = System.getenv()
-    val appContext = ApplicationContext(env)
-    appContext.startApp()
+    val log = LoggerFactory.getLogger("no.nav.arbeidsplassen.stihibi")
+
+    try {
+        val env = System.getenv()
+        val appContext = ApplicationContext(env)
+        appContext.startApp()
+    } catch (e: Exception) {
+        log.error("Uventet feil ved oppstart av applikasjon", e)
+    }
 }
 
 const val KONSUMENT_ID_MDC_KEY = "konsument_id"
@@ -61,7 +67,7 @@ fun startJavalin(
     accessManager: JavalinAccessManager
 ): Javalin {
     val requestLogger = LoggerFactory.getLogger("access")
-    val log = LoggerFactory.getLogger("no.nav.arbeid.cv")
+    val log = LoggerFactory.getLogger("no.nav.arbeidsplassen.stihibi")
     val micrometerPlugin = MicrometerPlugin { micrometerConfig ->
         micrometerConfig.registry = meterRegistry
     }

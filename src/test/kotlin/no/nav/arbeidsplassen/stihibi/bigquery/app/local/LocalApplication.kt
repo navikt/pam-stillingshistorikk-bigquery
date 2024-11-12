@@ -4,6 +4,7 @@ import no.nav.arbeidsplassen.stihibi.bigquery.app.env
 import no.nav.arbeidsplassen.stihibi.startApp
 
 fun main() {
+    val log = org.slf4j.LoggerFactory.getLogger("no.nav.arbeidsplassen.stihibi")
 
     env["TOKEN_X_WELL_KNOWN_URL"] = "http://host.docker.internal:8237/tokenx/.well-known/openid-configuration"
     env["TOKEN_X_PRIVATE_JWK"] =
@@ -14,5 +15,9 @@ fun main() {
     env["AZURE_APP_CLIENT_ID"] = "local-azure-client-id"
 
     val localAppCtx = LocalApplicationContext(env)
-    localAppCtx.startApp()
+    try {
+        localAppCtx.startApp()
+    } catch (e: Exception) {
+        log.error("Uventet feil ved oppstart av applikasjon", e)
+    }
 }
