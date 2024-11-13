@@ -25,6 +25,8 @@ spec:
     requests:
       cpu: 1000m
       memory: 1024Mi
+  secureLogs:
+    enabled: true
   vault:
     enabled: false
   webproxy: false
