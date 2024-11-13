@@ -15,11 +15,11 @@ import java.io.File
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class AdTopicListenerTest : TestRunningApplication() {
-    private val topic = appCtx.env.getValue("STILLING-HISTORIKK_TOPIC")
+    private val topic = appCtx.env.getValue("ADLISTENER_TOPIC")
     private val stilling: AdTransport = appCtx.objectMapper.readValue(File("src/test/resources/stilling.json"))
     private val bigQueryService: BigQueryService = mockk()
     private val adTopicListener = AdTopicListener(
-        kafkaConsumer = appCtx.kafkaConfig.kafkaJsonConsumer(topic, appCtx.env.getValue("STIHIBI_GROUP_ID")),
+        kafkaConsumer = appCtx.kafkaConfig.kafkaJsonConsumer(topic, appCtx.env.getValue("ADLISTENER_GROUP_ID")),
         bigQueryService = bigQueryService,
         topic = topic,
         objectMapper = appCtx.objectMapper,

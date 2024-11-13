@@ -41,7 +41,7 @@ fun ApplicationContext.startApp(): Javalin {
     )
 
     setupAllRoutes(javalin)
-    startProsesserOgLyttere()
+    startLyttere()
 
     return javalin
 }
@@ -54,8 +54,8 @@ private fun ApplicationContext.setupAllRoutes(javalin: Javalin) {
     administrationTimeController.setupRoutes(javalin)
 }
 
-private fun ApplicationContext.startProsesserOgLyttere() {
-    if (env["START_KAFKA_KONSUMENTER"] == "true") {
+private fun ApplicationContext.startLyttere() {
+    if (env["ADLISTENER_ENABLED"] == "true") {
         kafkaLyttere.forEach { lytter -> lytter.startLytter() }
     }
 }

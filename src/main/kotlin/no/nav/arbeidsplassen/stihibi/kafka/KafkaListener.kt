@@ -48,7 +48,6 @@ abstract class KafkaListener<T> {
                         }
                     }
                 records = kafkaConsumer.poll(Duration.ofSeconds(10))
-                LOG.info("Poller Kafka stihibi lytter, antall rader: ${records.count()}")
                 if (records.count() > 0) {
                     currentPositions = records
                         .groupBy { TopicPartition(it.topic(), it.partition()) }

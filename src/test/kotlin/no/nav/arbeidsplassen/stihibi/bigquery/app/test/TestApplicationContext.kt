@@ -23,8 +23,8 @@ class TestApplicationContext(
         .also { container ->
         localEnv["BIGQUERY_PROJECT_ID"] = container.projectId
         localEnv["BIGQUERY_ENDPOINT"] = container.emulatorHttpEndpoint
-        localEnv["START_KAFKA_KONSUMENTER"] = "false"
-        localEnv["STIHIBI_GROUP_ID"] = "test"
+        localEnv["ADLISTENER_ENABLED"] = "false"
+        localEnv["ADLISTENER_GROUP_ID"] = "test"
         println("Started BigQuery Emulator on ${container.emulatorHttpEndpoint} with pid: ${container.projectId}")
     },
     val localKafka: Any = ConfluentKafkaContainer("confluentinc/cp-kafka:7.7.0")

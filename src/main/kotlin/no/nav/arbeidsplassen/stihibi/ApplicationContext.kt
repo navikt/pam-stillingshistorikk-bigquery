@@ -73,8 +73,8 @@ open class ApplicationContext(envInn: Map<String, String>) {
     private fun kafkaLyttere(): List<KafkaListener<*>> {
         val lyttere = mutableListOf<KafkaListener<*>>()
 
-        val topic = env.getValue("STILLING-HISTORIKK_TOPIC")
-        val adTopicConsumerConfig = kafkaConfig.kafkaJsonConsumer(topic, env.getValue("STIHIBI_GROUP_ID"))
+        val topic = env.getValue("ADLISTENER_TOPIC")
+        val adTopicConsumerConfig = kafkaConfig.kafkaJsonConsumer(topic, env.getValue("ADLISTENER_GROUP_ID"))
         val adTopicListener by lazy { AdTopicListener(adTopicConsumerConfig, bigQueryService, topic, objectMapper, healthService) }
         lyttere.add(adTopicListener)
 

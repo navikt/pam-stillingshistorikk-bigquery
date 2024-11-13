@@ -39,7 +39,7 @@ private class KafkaListenerTester(
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class KafkaListenerTest : TestRunningApplication() {
-    private val topic = appCtx.env.getValue("STILLING-HISTORIKK_TOPIC")
+    private val topic = appCtx.env.getValue("ADLISTENER_TOPIC")
     private val healthService = mockk<HealthService>()
     private val kafkaConsumer = mockk<KafkaConsumer<String?, ByteArray?>>()
     private val produsent = appCtx.kafkaConfig.kafkaProducer()

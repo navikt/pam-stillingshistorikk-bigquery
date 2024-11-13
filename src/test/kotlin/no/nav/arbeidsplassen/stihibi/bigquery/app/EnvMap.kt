@@ -8,7 +8,7 @@ val env = mutableMapOf(
     "AZURE_OPENID_CONFIG_TOKEN_ENDPOINT" to "http://localhost/noe_mock_server_greier",
     "AZURE_APP_CLIENT_ID" to "azureClientId",
     "AZURE_APP_CLIENT_SECRET" to "hemmelig",
-    "START_KAFKA_KONSUMENTER" to "true",
-    "STILLING-HISTORIKK_TOPIC" to "teampam.stilling-historikk",
-    "STIHIBI_GROUP_ID" to "pam-stihibi",
+    "ADLISTENER_ENABLED" to "true",
+    "ADLISTENER_TOPIC" to "teampam.stilling-historikk",
+    "ADLISTENER_GROUP_ID" to "stihibi",
 )
