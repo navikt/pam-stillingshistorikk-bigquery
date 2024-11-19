@@ -1,5 +1,5 @@
 {
-  "ingress": ["https://pam-stillingshistorikk.intern.nav.no", "https://stillingshistorikk.intern.nav.no"],
+  "ingress": ["https://pam-stillingshistorikk.intern.nav.no"],
   "azure_ad_tenant": "nav.no",
   "adlistener_group_id": "stilling_historikk_v2",
   "adlistener_topic": "teampam.stilling-historikk",
