@@ -1,2 +1,1 @@
-
-rootProject.name="stihibi"
+rootProject.name="stillingshistorikk"

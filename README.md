@@ -1,4 +1,4 @@
-# Stihibi
+# stillingshistorikk
 
 * Konsumerer stillinger fra internt kafka-topic
 * Lagrer det i BigQuery

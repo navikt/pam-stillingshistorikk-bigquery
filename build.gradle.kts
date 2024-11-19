@@ -8,10 +8,10 @@ plugins {
 }
 
 version = "0.1"
-group "no.nav.arbeidsplassen.stihibi"
+group "no.nav.arbeidsplassen.stillingshistorikk"
 
 application {
-    mainClass.set("no.nav.arbeidsplassen.stihibi.ApplicationKt")
+    mainClass.set("no.nav.arbeidsplassen.stillingshistorikk.ApplicationKt")
 }
 
 java {
@@ -45,7 +45,7 @@ tasks {
 }
 
 tasks.named("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar::class) {
-    archiveFileName.set("stihibi-$version-all.jar")
+    archiveFileName.set("stillingshistorikk-$version-all.jar")
     mergeServiceFiles()
 }
 
