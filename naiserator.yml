@@ -32,7 +32,7 @@ spec:
   webproxy: false
   prometheus:
     enabled: true
-    path: /prometheus
+    path: /internal/prometheus
   observability:
     logging:
       destinations:
