@@ -5,11 +5,7 @@ import com.google.cloud.bigquery.Field
 import com.google.cloud.bigquery.Schema
 import com.google.cloud.bigquery.StandardSQLTypeName
 
-class AdSchemaTableDefinition(private val objectMapper: ObjectMapper) {
-
-    val tableNameV1 = "stilling_historikk_v1"
-    val dataSet = "stilling_historikk_bq"
-
+class AdSchemaTableDefinition(val tableName: String, val dataSet: String, private val objectMapper: ObjectMapper) {
     val schemaV1: Schema = Schema.of(
         Field.of("uuid", StandardSQLTypeName.STRING),
         Field.of("id", StandardSQLTypeName.INT64),

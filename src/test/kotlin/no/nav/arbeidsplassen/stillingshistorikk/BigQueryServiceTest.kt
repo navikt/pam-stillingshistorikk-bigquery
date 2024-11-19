@@ -13,7 +13,7 @@ import java.time.LocalDate
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class BigQueryServiceTest : TestRunningApplication() {
     private inline fun <reified T>readFile(filnavn: String) = appCtx.objectMapper.readValue<T>(File(filnavn))
-    private val tableFNAME = "${appCtx.bigQuery.options.projectId}.${appCtx.adSchemaTableDefinition.dataSet}.${appCtx.adSchemaTableDefinition.tableNameV1}"
+    private val tableFNAME = "${appCtx.bigQuery.options.projectId}.${appCtx.adSchemaTableDefinition.dataSet}.${appCtx.adSchemaTableDefinition.tableName}"
     private val stilling: AdTransport = readFile("src/test/resources/stilling.json")
     private val stillinger: List<AdTransport> = readFile("src/test/resources/stillingshistorikk-dummy-data.json")
     private val nssBehandledeStillinger: List<AdTransport> = readFile("src/test/resources/stillinger-behandlet-av-nss.json")

@@ -10,5 +10,6 @@ val env = mutableMapOf(
     "AZURE_APP_CLIENT_SECRET" to "hemmelig",
     "ADLISTENER_ENABLED" to "true",
     "ADLISTENER_TOPIC" to "teampam.stilling-historikk",
-    "ADLISTENER_GROUP_ID" to "stillingshistorikk",
+    "ADLISTENER_GROUP_ID" to "stilling_historikk",
+    "GOOGLE_BIGQUERY_DATASET" to "stilling_historikk_bq",
 )

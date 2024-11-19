@@ -1,9 +1,10 @@
 {
   "ingress": ["https://pam-stillingshistorikk.intern.dev.nav.no", "https://stillingshistorikk.intern.dev.nav.no"],
   "azure_ad_tenant": "trygdeetaten.no",
-  "adlistener_group_id": "stillingshistorikk_20210817",
+  "adlistener_group_id": "stilling_historikk_v2",
   "adlistener_topic": "teampam.stilling-historikk",
   "adlistener_enabled": "true",
   "google_cloud_project": "teampam-dev-429f",
+  "google_bigquery_dataset": "stilling_historikk_bq",
   "kafka_pool": "nav-dev"
 }

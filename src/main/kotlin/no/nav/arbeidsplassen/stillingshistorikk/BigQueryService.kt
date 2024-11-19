@@ -13,7 +13,7 @@ class BigQueryService(
     private val objectMapper: ObjectMapper
 ) {
 
-    private val tableId: TableId = TableId.of(adSchemaTableDefinition.dataSet, adSchemaTableDefinition.tableNameV1)
+    private val tableId: TableId = TableId.of(adSchemaTableDefinition.dataSet, adSchemaTableDefinition.tableName)
     private val tableFNAME = "${bq.options.projectId}.${tableId.dataset}.${tableId.table}"
 
     companion object {
@@ -60,6 +60,7 @@ class BigQueryService(
             .setTimePartitioning(partitioning)
             .build()
         val tableInfo = TableInfo.newBuilder(tableId, tableDefinition).build()
+        LOG.info("Oppretter tabell ${tableId.table} i dataset ${tableId.dataset}")
         return bq.create(tableInfo)
     }
 
