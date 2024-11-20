@@ -59,9 +59,11 @@ spec:
       claims:
         extra:
           - "NAVident"
-  filesFrom:
-    - secret: pam-stillingshistorikk-credentials
-      mountPath: /var/run/secrets/credentials/pam-stillingshistorikk
+  gcp:
+    bigQueryDatasets:
+      - cascadingDelete: false
+        name: {{ google_bigquery_dataset }}
+        permission: READWRITE
   env:
     - name: ADLISTENER_GROUP_ID
       value: "{{ adlistener_group_id }}"
@@ -69,9 +71,5 @@ spec:
       value: "{{ adlistener_topic }}"
     - name: ADLISTENER_ENABLED
       value: "{{ adlistener_enabled }}"
-    - name: GOOGLE_APPLICATION_CREDENTIALS
-      value: "/var/run/secrets/credentials/pam-stillingshistorikk/secret"
-    - name: GOOGLE_CLOUD_PROJECT
-      value: "{{ google_cloud_project }}"
     - name: GOOGLE_BIGQUERY_DATASET
       value: "{{ google_bigquery_dataset }}"

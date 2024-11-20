@@ -4,7 +4,6 @@
   "adlistener_group_id": "stilling_historikk_v2",
   "adlistener_topic": "teampam.stilling-historikk",
   "adlistener_enabled": "false",
-  "google_cloud_project": "teampam-prod-7da6",
   "google_bigquery_dataset": "stilling_historikk_bq",
   "kafka_pool": "nav-prod"
 }
