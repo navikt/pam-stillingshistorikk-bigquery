@@ -22,6 +22,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.time.Duration
+import java.util.*
 import kotlin.concurrent.thread
 
 private val recordCollector = mutableListOf<ConsumerRecords<String?, ByteArray?>>()
@@ -38,7 +39,7 @@ private class KafkaListenerTester(
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class KafkaListenerTest : TestRunningApplication() {
-    private val topic = appCtx.env.getValue("ADLISTENER_TOPIC")
+    private val topic = "test-topic-${UUID.randomUUID()}"
     private val healthService = mockk<HealthService>()
     private val kafkaConsumer = mockk<KafkaConsumer<String?, ByteArray?>>()
     private val produsent = appCtx.kafkaConfig.kafkaProducer()
@@ -68,7 +69,7 @@ class KafkaListenerTest : TestRunningApplication() {
         produsent.send(melding)
 
         every { healthService.isHealthy() } returns true andThen false
-        every { kafkaConsumer.poll(Duration.ofSeconds(10)) } answers {
+        every { kafkaConsumer.poll(Duration.ofSeconds(1)) } answers {
             ConsumerRecords(mapOf(Pair(TopicPartition(topic, 0), listOf(forventetMelding))))
         }
         val exeption = catchThrowable { kafkaListener.startLytter().join() }
@@ -100,7 +101,7 @@ class KafkaListenerTest : TestRunningApplication() {
 
     @Test
     fun `Skal håntere AuthorizationException i consumerloop og øke antall unhealthy votes`() {
-        every { healthService.isHealthy() } returns true
+        every { healthService.isHealthy() } returns true andThen false
         every { healthService.addUnhealthyVote() } returns 1
         every { kafkaConsumer.poll(Duration.ofSeconds(10)) } throws AuthorizationException("AuthorizationException")
 
@@ -112,7 +113,7 @@ class KafkaListenerTest : TestRunningApplication() {
 
     @Test
     fun `Skal håntere KafkaException i consumerloop og øke antall unhealthy votes`() {
-        every { healthService.isHealthy() } returns true
+        every { healthService.isHealthy() } returns true andThen false
         every { healthService.addUnhealthyVote() } returns 1
         every { kafkaConsumer.poll(Duration.ofSeconds(10)) } throws KafkaException("KafkaException")
 
@@ -124,7 +125,7 @@ class KafkaListenerTest : TestRunningApplication() {
 
     @Test
     fun `Skal håntere SerializationException i consumerloop og øke antall unhealthy votes`() {
-        every { healthService.isHealthy() } returns true
+        every { healthService.isHealthy() } returns true andThen false
         every { healthService.addUnhealthyVote() } returns 1
         every { kafkaConsumer.poll(Duration.ofSeconds(10)) } throws SerializationException("SerializationException")
 
@@ -136,7 +137,7 @@ class KafkaListenerTest : TestRunningApplication() {
 
     @Test
     fun `Skal håntere RowInsertException i consumerloop og øke antall unhealthy votes`() {
-        every { healthService.isHealthy() } returns true
+        every { healthService.isHealthy() } returns true andThen false
         every { healthService.addUnhealthyVote() } returns 1
         every { kafkaConsumer.poll(Duration.ofSeconds(10)) } throws RowInsertException("RowInsertException")
 
@@ -148,7 +149,7 @@ class KafkaListenerTest : TestRunningApplication() {
 
     @Test
     fun `Skal håntere uventet Exception i consumerloop og øke antall unhealthy votes`() {
-        every { healthService.isHealthy() } returns true
+        every { healthService.isHealthy() } returns true andThen false
         every { healthService.addUnhealthyVote() } returns 1
         every { kafkaConsumer.poll(Duration.ofSeconds(10)) } throws Exception("Exception")
 
