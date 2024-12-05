@@ -63,9 +63,7 @@ open class ApplicationContext(envInn: Map<String, String>) {
 
     open val bigQuery: BigQuery by lazy { BigQueryOptions.getDefaultInstance().service }
     val adSchemaTableDefinition = AdSchemaTableDefinition(env.getValue("ADLISTENER_GROUP_ID"), env.getValue("GOOGLE_BIGQUERY_DATASET"), objectMapper)
-    private val bigQueryService by lazy {
-        BigQueryService(adSchemaTableDefinition, bigQuery, objectMapper)
-    }
+    val bigQueryService by lazy { BigQueryService(adSchemaTableDefinition, bigQuery, objectMapper) }
     val adAvvisningController by lazy { AdAvvisningContoller(bigQueryService, objectMapper) }
     val adHistoryContoller by lazy { AdHistoryContoller(bigQueryService, objectMapper) }
     val administrationTimeController by lazy { AdministrationTimeController(bigQueryService) }
