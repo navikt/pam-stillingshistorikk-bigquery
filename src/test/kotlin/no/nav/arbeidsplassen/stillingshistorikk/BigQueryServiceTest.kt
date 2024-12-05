@@ -26,13 +26,15 @@ class BigQueryServiceTest : TestRunningApplication() {
 
     @Test
     fun `Skal sende stillinger til BigQuery`() {
+        val antallStillinger = 100
         val response = bigQueryService.sendBatch(
-            stillinger,
-            List(3) { 0L },
-            List(3) { 0 },
-            List(3) { "" })
+            List(antallStillinger) { stilling },
+            List(antallStillinger) { 0L },
+            List(antallStillinger) { 0 },
+            List(antallStillinger) { "" })
+        val mottatteRader = appCtx.bigQuery.query(QueryJobConfiguration.of("SELECT * FROM `${tableFNAME}`"))
 
-        assertThat(stillinger.size).isEqualTo(3)
+        assertThat(mottatteRader.iterateAll().count()).isEqualTo(antallStillinger)
         assertThat(response.hasError).isFalse()
         assertThat(response.rowsError).isEqualTo(0)
     }
