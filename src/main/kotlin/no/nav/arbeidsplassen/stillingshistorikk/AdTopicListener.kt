@@ -25,11 +25,6 @@ class AdTopicListener(
 
     override fun handleRecords(records: ConsumerRecords<String?, ByteArray?>) {
         try {
-            records.forEach { record ->
-                MDC.put("K", record.key())
-                val eventId = record.headers().headers("@eventId").firstOrNull()?.let { String(it.value()) }
-                MDC.put("TraceId", eventId)
-            }
             val response = bigQueryService.sendBatch(
                 ads = records.map { objectMapper.readValue(it.value(), AdTransport::class.java) },
                 offsets = records.map { it.offset() },
@@ -38,11 +33,11 @@ class AdTopicListener(
             )
 
             if (response.hasError) {
-                LOG.error("We got error while inserting to bigquery, rows failed {}", response.rowsError)
-                LOG.error("failed at start batch offset ${records.first().offset()} partition ${records.first().partition()}")
+                LOG.error("Insetting til BigQuery feilet i ${response.rowsError} rader, feilet ved starten av batchen med offset ${records.first().offset()} og partition ${records.first().partition()}")
                 throw RowInsertException("Rows inserts failed!")
             }
-            LOG.info("Insert successfully, committing offset")
+            MDC.put("Keys", records.mapNotNull { it.key() }.joinToString(", "))
+            LOG.info("Sendte ${records.count()} rader til BigQuery")
         } finally {
             MDC.clear()
         }

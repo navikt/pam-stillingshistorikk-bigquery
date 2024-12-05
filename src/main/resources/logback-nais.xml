@@ -10,6 +10,8 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <includeMdcKeyName>TraceId</includeMdcKeyName>
             <includeMdcKeyName>konsument_id</includeMdcKeyName>
+            <includeMdcKeyName>Keys</includeMdcKeyName>
+            <includeMdcKeyName>U</includeMdcKeyName>
         </encoder>
     </appender>
 
@@ -34,8 +36,8 @@
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <includeMdcKeyName>TraceId</includeMdcKeyName>
             <includeMdcKeyName>konsument_id</includeMdcKeyName>
+            <includeMdcKeyName>Keys</includeMdcKeyName>
             <includeMdcKeyName>U</includeMdcKeyName>
-            <includeMdcKeyName>K</includeMdcKeyName>
         </encoder>
     </appender>
 
