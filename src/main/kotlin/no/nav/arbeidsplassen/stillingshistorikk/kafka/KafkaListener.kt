@@ -23,8 +23,6 @@ abstract class KafkaListener<T> {
     abstract fun startLytter(): Thread
     abstract fun handleRecords(records: ConsumerRecords<String?, T?>): Unit?
 
-    val kontrollKø: BlockingQueue<KafkaState> = LinkedBlockingQueue()
-
     fun startInternLytter() {
         LOG.info("Starter Kafka stillingshistorikk lytter")
         var records: ConsumerRecords<String?, T?>?
@@ -56,13 +54,5 @@ abstract class KafkaListener<T> {
             }
         }
         kafkaConsumer.close()
-    }
-
-    fun pauseLytter() = kontrollKø.put(KafkaState.PAUSE)
-    fun gjenopptaLytter() = kontrollKø.put(KafkaState.GJENOPPTA)
-    fun harFeilet() = healthService.isHealthy().not()
-
-    enum class KafkaState {
-        PAUSE, GJENOPPTA
     }
 }

@@ -59,8 +59,6 @@ open class ApplicationContext(envInn: Map<String, String>) {
 
     val naisController = NaisController(healthService, prometheusRegistry)
 
-    val statusController by lazy { StatusController(kafkaLyttere) }
-
     open val bigQuery: BigQuery by lazy { BigQueryOptions.getDefaultInstance().service }
     val adSchemaTableDefinition = AdSchemaTableDefinition(env.getValue("ADLISTENER_GROUP_ID"), env.getValue("GOOGLE_BIGQUERY_DATASET"), objectMapper)
     val bigQueryService by lazy { BigQueryService(adSchemaTableDefinition, bigQuery, objectMapper) }

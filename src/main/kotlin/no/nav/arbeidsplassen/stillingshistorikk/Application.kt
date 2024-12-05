@@ -48,7 +48,6 @@ fun ApplicationContext.startApp(): Javalin {
 
 private fun ApplicationContext.setupAllRoutes(javalin: Javalin) {
     naisController.setupRoutes(javalin)
-    statusController.setupRoutes(javalin)
     adAvvisningController.setupRoutes(javalin)
     adHistoryContoller.setupRoutes(javalin)
     administrationTimeController.setupRoutes(javalin)

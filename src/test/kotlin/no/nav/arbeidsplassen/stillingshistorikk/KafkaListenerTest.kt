@@ -6,7 +6,6 @@ import io.mockk.mockk
 import io.mockk.verify
 import no.nav.arbeidsplassen.stillingshistorikk.app.test.TestRunningApplication
 import no.nav.arbeidsplassen.stillingshistorikk.kafka.KafkaListener
-import no.nav.arbeidsplassen.stillingshistorikk.kafka.KafkaListener.KafkaState
 import no.nav.arbeidsplassen.stillingshistorikk.nais.HealthService
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
@@ -78,25 +77,6 @@ class KafkaListenerTest : TestRunningApplication() {
         assertThat(recordCollector.size).isEqualTo(1)
         assertThat(recordCollector.first().count()).isEqualTo(1)
         assertThat(recordCollector.first().first()).isEqualTo(forventetMelding)
-    }
-
-    @Test
-    fun `Skal kunne pause og gjenoppta lytteren`() {
-        every { healthService.isHealthy() } returns true
-        every { kafkaConsumer.pause(any()) } returns Unit
-        every { kafkaConsumer.resume(any()) } returns Unit
-        kafkaListener.kontrollKø.put(KafkaState.GJENOPPTA) // starter i GJENOPPTA for at status ikke skal være null
-
-        kafkaListener.startLytter()
-        Thread.sleep(1000) // venter litt for å la lytteren starte
-
-        kafkaListener.pauseLytter()
-        Thread.sleep(1000) // venter litt for å la lytteren pause
-        assertThat(kafkaListener.kontrollKø.take()).isEqualTo(KafkaState.PAUSE)
-
-        kafkaListener.gjenopptaLytter()
-        Thread.sleep(1000) // venter litt for å la lytteren gjenoppta
-        assertThat(kafkaListener.kontrollKø.take()).isEqualTo(KafkaState.GJENOPPTA)
     }
 
     @Test
