@@ -3,7 +3,7 @@
   "azure_ad_tenant": "nav.no",
   "adlistener_group_id": "stilling_historikk_v2",
   "adlistener_topic": "teampam.stilling-historikk",
-  "adlistener_enabled": "false",
+  "adlistener_enabled": "true",
   "google_bigquery_dataset": "stilling_historikk_bq",
   "kafka_pool": "nav-prod"
 }
