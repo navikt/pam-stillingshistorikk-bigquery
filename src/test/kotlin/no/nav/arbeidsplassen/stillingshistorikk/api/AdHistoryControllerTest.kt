@@ -24,7 +24,7 @@ class AdHistoryControllerTest : TestRunningApplication() {
     }
 
     @Test
-    fun `Skal hente stillingshistorikk uten år og returnere 400`() {
+    fun `Skal feile ved henting av stillingshistorikk ved manglende parameter 'year' og returnere Bad Request`() {
         val request = HttpRequest.newBuilder()
             .uri(URI("$lokalBaseUrl/api/v1/ads/history/uuid"))
             .GET()

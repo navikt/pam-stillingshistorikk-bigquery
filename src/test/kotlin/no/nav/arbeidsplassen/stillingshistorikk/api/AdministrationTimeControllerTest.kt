@@ -22,4 +22,24 @@ class AdministrationTimeControllerTest : TestRunningApplication() {
         val response = HttpClient.newBuilder().build().send(request, BodyHandlers.ofString())
         assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.code)
     }
+
+    @Test
+    fun `Skal returnere Bad Request ved ugyldig 'from' parameter`() {
+        val request = HttpRequest.newBuilder()
+            .uri(URI("$lokalBaseUrl/api/v1/admin/report/behandlingstid.csv?from=ugyldig-dato"))
+            .GET()
+            .build()
+        val response = HttpClient.newBuilder().build().send(request, BodyHandlers.ofString())
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.code)
+    }
+
+    @Test
+    fun `Skal returnere Bad Request ved ugyldig 'to' parameter`() {
+        val request = HttpRequest.newBuilder()
+            .uri(URI("$lokalBaseUrl/api/v1/admin/report/behandlingstid.csv?to=ugyldig-dato"))
+            .GET()
+            .build()
+        val response = HttpClient.newBuilder().build().send(request, BodyHandlers.ofString())
+        assertThat(response.statusCode()).isEqualTo(HttpStatus.BAD_REQUEST.code)
+    }
 }
