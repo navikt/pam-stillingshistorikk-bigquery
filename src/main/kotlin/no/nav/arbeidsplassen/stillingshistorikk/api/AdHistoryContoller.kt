@@ -25,6 +25,7 @@ class AdHistoryContoller(
         val år = ctx.queryParam("year")?.toInt()
         if (år == null) {
             ctx.status(HttpStatus.BAD_REQUEST).contentType("text/plain").result("Mangler parameter 'year'")
+            LOG.warn("Mangler parameter 'year'")
         } else {
             ctx.result(objectMapper.writeValueAsString(bigQueryService.queryAdHistory(uuid, år)))
             LOG.info("Henter stillingshistorikk for stilling: $uuid og år: $år")
