@@ -11,6 +11,7 @@ import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
+import io.micrometer.core.instrument.binder.logging.LogbackMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.core.instrument.binder.system.UptimeMetrics
 import io.micrometer.prometheusmetrics.PrometheusConfig
@@ -42,6 +43,7 @@ open class ApplicationContext(envInn: Map<String, String>) {
         JvmThreadMetrics().bindTo(registry)
         UptimeMetrics().bindTo(registry)
         ProcessorMetrics().bindTo(registry)
+        LogbackMetrics().bindTo(registry)
     }
 
     val httpClient: HttpClient = HttpClient.newBuilder()
