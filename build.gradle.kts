@@ -89,7 +89,7 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:gcloud:$testContainersVersion")
     testImplementation("org.testcontainers:kafka:$testContainersVersion")
-    testImplementation("org.assertj:assertj-core:3.27.3")
+    testImplementation("org.assertj:assertj-core:3.27.7")
     testImplementation("io.mockk:mockk:1.13.17")
 }
 
