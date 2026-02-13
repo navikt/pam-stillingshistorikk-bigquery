@@ -75,7 +75,7 @@ dependencies {
     implementation("no.nav.security:token-client-core:$tokenSupportVersion")
 
     implementation("org.apache.kafka:kafka-clients:3.9.0")
-    implementation("org.apache.avro:avro:1.12.0")
+    implementation("org.apache.avro:avro:1.12.1")
     implementation("io.confluent:kafka-avro-serializer:7.9.0")
 
     implementation("ch.qos.logback:logback-classic:1.5.17")
