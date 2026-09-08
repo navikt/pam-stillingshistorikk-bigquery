@@ -11,7 +11,7 @@ import java.io.File
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class BigQueryServiceTest : TestRunningApplication() {
@@ -47,7 +47,10 @@ class BigQueryServiceTest : TestRunningApplication() {
         // Testdataene har faste timestamps fra 2024. queryAvvisning filtrerer på "created" siste året
         // fra CURRENT_DATETIME(), så vi forskyver tidsstemplene relativt til dagens dato for at testen
         // ikke skal feile når den kjøres mer enn ett år etter at testdataene ble skrevet.
-        val forskyvning = Duration.between(LocalDateTime.parse("2024-05-08T06:00:50.306669"), LocalDateTime.now().minusMonths(6))
+        val forskyvning = Duration.between(
+            LocalDateTime.parse("2024-05-08T06:00:50.306669"),
+            LocalDateTime.now().minusMonths(6).truncatedTo(ChronoUnit.MICROS)
+        )
         val sendteStillinger = (stillinger + nssBehandledeStillinger).map {
             it.copy(created = it.created.plus(forskyvning), updated = it.updated.plus(forskyvning))
         }
