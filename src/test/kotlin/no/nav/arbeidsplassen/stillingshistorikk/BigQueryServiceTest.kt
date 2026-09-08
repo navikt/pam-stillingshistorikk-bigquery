@@ -8,7 +8,9 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import java.io.File
+import java.time.Duration
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class BigQueryServiceTest : TestRunningApplication() {
@@ -41,8 +43,15 @@ class BigQueryServiceTest : TestRunningApplication() {
 
     @Test
     fun `Skal hente alle avviste stillinger siste året`() {
-        val sendteStillinger = stillinger + nssBehandledeStillinger
-        val avvisteStillinger: List<Avvisning> = readFile("src/test/resources/avviste-stillinger.json")
+        // Testdataene har faste timestamps fra 2024. queryAvvisning filtrerer på "created" siste året
+        // fra CURRENT_DATETIME(), så vi forskyver tidsstemplene relativt til dagens dato for at testen
+        // ikke skal feile når den kjøres mer enn ett år etter at testdataene ble skrevet.
+        val forskyvning = Duration.between(LocalDateTime.parse("2024-05-08T06:00:50.306669"), LocalDateTime.now().minusMonths(6))
+        val sendteStillinger = (stillinger + nssBehandledeStillinger).map {
+            it.copy(created = it.created.plus(forskyvning), updated = it.updated.plus(forskyvning))
+        }
+        val avvisteStillinger: List<Avvisning> = readFile<List<Avvisning>>("src/test/resources/avviste-stillinger.json")
+            .map { it.copy(avvist_tidspunkt = it.avvist_tidspunkt.plus(forskyvning)) }
         bigQueryService.sendBatch(
             sendteStillinger,
             List(sendteStillinger.size) { 0L },
