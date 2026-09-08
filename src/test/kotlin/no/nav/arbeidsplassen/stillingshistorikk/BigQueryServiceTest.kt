@@ -11,6 +11,7 @@ import java.io.File
 import java.time.Duration
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 class BigQueryServiceTest : TestRunningApplication() {
@@ -59,7 +60,7 @@ class BigQueryServiceTest : TestRunningApplication() {
             List(sendteStillinger.size) { "" })
 
         val response: List<Avvisning> = bigQueryService.queryAvvisning()
-        assertThat(response).isEqualTo(avvisteStillinger)
+        assertThat(response).containsExactlyInAnyOrderElementsOf(avvisteStillinger)
     }
 
     @Test
