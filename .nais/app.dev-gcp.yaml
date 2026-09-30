@@ -1,0 +1,8 @@
+spec:
+  kafka:
+    pool: nav-dev
+  ingresses:
+    - https://pam-stillingshistorikk.intern.dev.nav.no
+  azure:
+    application:
+      tenant: trygdeetaten.no
