@@ -1,12 +1,11 @@
-apiVersion: "nais.io/v1alpha1"
-kind: "Application"
+apiVersion: nais.io/v1alpha1
+kind: Application
 metadata:
   name: pam-stillingshistorikk-bigquery
   namespace: teampam
   labels:
     team: teampam
 spec:
-  image: {{ image }}
   port: 8080
   liveness:
     path: /internal/isAlive
@@ -35,22 +34,15 @@ spec:
       destinations:
         - id: loki
         - id: elastic
-  kafka:
-    pool: {{ kafka_pool }}
   accessPolicy:
     inbound:
       rules:
         - application: pam-ad-api
-  ingresses:
-  {{#each ingress as |url|}}
-     - {{url}}
-  {{/each}}
   tokenx:
     enabled: true
   azure:
     application:
       enabled: true
-      tenant: {{ azure_ad_tenant }}
       allowAllUsers: true
       claims:
         extra:
@@ -58,14 +50,14 @@ spec:
   gcp:
     bigQueryDatasets:
       - cascadingDelete: false
-        name: {{ google_bigquery_dataset }}
+        name: stilling_historikk_bq
         permission: READWRITE
   env:
     - name: ADLISTENER_GROUP_ID
-      value: "{{ adlistener_group_id }}"
+      value: stilling_historikk_v2
     - name: ADLISTENER_TOPIC
-      value: "{{ adlistener_topic }}"
+      value: teampam.stilling-historikk
     - name: ADLISTENER_ENABLED
-      value: "{{ adlistener_enabled }}"
+      value: "true"
     - name: GOOGLE_BIGQUERY_DATASET
-      value: "{{ google_bigquery_dataset }}"
+      value: stilling_historikk_bq
