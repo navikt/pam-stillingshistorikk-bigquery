@@ -1,7 +1,5 @@
 package no.nav.arbeidsplassen.stillingshistorikk.kafka
 
-import io.confluent.kafka.serializers.KafkaAvroDeserializer
-import io.confluent.kafka.serializers.KafkaAvroDeserializerConfig
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener
@@ -84,19 +82,6 @@ open class KafkaConfig(private val env: Map<String, String>) {
         props[ConsumerConfig.HEARTBEAT_INTERVAL_MS_CONFIG] = 3000
 
         return props
-    }
-
-    private fun kafkaAvroConsumerProperties(groupId: String): Map<String, Any> {
-        val avroProps = mapOf(
-            ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG to KafkaAvroDeserializer::class.java,
-            ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG to KafkaAvroDeserializer::class.java,
-            KafkaAvroDeserializerConfig.SCHEMA_REGISTRY_URL_CONFIG to env["KAFKA_SCHEMA_REGISTRY"]!!,
-            KafkaAvroDeserializerConfig.USER_INFO_CONFIG to "${env["KAFKA_SCHEMA_REGISTRY_USER"]!!}:${env["KAFKA_SCHEMA_REGISTRY_PASSWORD"]!!}",
-            KafkaAvroDeserializerConfig.BASIC_AUTH_CREDENTIALS_SOURCE to "USER_INFO",
-            KafkaAvroDeserializerConfig.SPECIFIC_AVRO_READER_CONFIG to true
-        )
-
-        return kafkaConsumerProperties(groupId) + avroProps
     }
 
     private fun kafkaProducerProperties(): Map<String, Any> {
