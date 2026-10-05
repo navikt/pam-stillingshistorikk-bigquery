@@ -1,7 +1,7 @@
-FROM gcr.io/distroless/java21:latest@sha256:26a517c7f7d69a98adab4d1e71d5a3a9f1079c85ac9c4193ce6b6bd3d73496f3
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-27@sha256:9f124e43e7d3c8605f42c6078f898421c9386087d87f1e1829a5bdc4e2a56bea
 
 COPY build/libs/stillingshistorikk-*-all.jar ./app.jar
-ENV JAVA_OPTS="-Xms768m -Xmx1280m"
+ENV JDK_JAVA_OPTIONS="-XX:-OmitStackTraceInFastThrow -XX:InitialRAMPercentage=25 -XX:MaxRAMPercentage=70 -XX:+ExitOnOutOfMemoryError"
 ENV LANG='nb_NO.UTF-8' LANGUAGE='nb_NO:nb' LC_ALL='nb:NO.UTF-8' TZ="Europe/Oslo"
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+CMD ["-jar", "/app.jar"]

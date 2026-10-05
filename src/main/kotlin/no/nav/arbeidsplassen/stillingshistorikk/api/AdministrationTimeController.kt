@@ -1,6 +1,6 @@
 package no.nav.arbeidsplassen.stillingshistorikk.api
 
-import io.javalin.Javalin
+import io.javalin.config.JavalinConfig
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
 import no.nav.arbeidsplassen.stillingshistorikk.BigQueryService
@@ -16,8 +16,8 @@ class AdministrationTimeController(
         private val LOG = LoggerFactory.getLogger(AdministrationTimeController::class.java)
     }
 
-    fun setupRoutes(javalin: Javalin) {
-        javalin.get("/api/v1/admin/report/behandlingstid.csv", { hentBehandlingstid(it) }, Rolle.UNPROTECTED)
+    fun setupRoutes(config: JavalinConfig) {
+        config.routes.get("/api/v1/admin/report/behandlingstid.csv", { hentBehandlingstid(it) }, Rolle.UNPROTECTED)
     }
 
     private fun hentBehandlingstid(ctx: Context) {

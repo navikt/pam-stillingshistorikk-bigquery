@@ -1,7 +1,7 @@
 package no.nav.arbeidsplassen.stillingshistorikk.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.javalin.Javalin
+import io.javalin.config.JavalinConfig
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
 import no.nav.arbeidsplassen.stillingshistorikk.BigQueryService
@@ -16,9 +16,9 @@ class AdAvvisningContoller(
         private val LOG = LoggerFactory.getLogger(AdAvvisningContoller::class.java)
     }
 
-    fun setupRoutes(javalin: Javalin) {
-        javalin.get("/api/v1/ads/avvisning", {hentAvvisteStillinger(it)}, Rolle.UNPROTECTED)
-        javalin.exception(Exception::class.java) { e, ctx -> håndterFeilmelding(e, ctx) }
+    fun setupRoutes(config: JavalinConfig) {
+        config.routes.get("/api/v1/ads/avvisning", {hentAvvisteStillinger(it)}, Rolle.UNPROTECTED)
+        config.routes.exception(Exception::class.java) { e, ctx -> håndterFeilmelding(e, ctx) }
     }
 
     fun hentAvvisteStillinger(ctx: Context) {
