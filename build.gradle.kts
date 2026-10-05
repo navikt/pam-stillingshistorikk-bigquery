@@ -1,9 +1,6 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    kotlin("jvm") version "2.0.21"
-    id("com.google.devtools.ksp") version "2.0.21-1.0.25"
-    id("com.gradleup.shadow") version "8.3.3"
+    kotlin("jvm") version "2.4.20"
+    id("com.gradleup.shadow") version "9.6.1"
     application
 }
 
@@ -14,8 +11,8 @@ application {
     mainClass.set("no.nav.arbeidsplassen.stillingshistorikk.ApplicationKt")
 }
 
-java {
-    sourceCompatibility = JavaVersion.toVersion("21")
+kotlin {
+    jvmToolchain(25)
 }
 
 repositories {
@@ -28,13 +25,11 @@ repositories {
 tasks {
     compileKotlin {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
             javaParameters = true
         }
     }
     compileTestKotlin {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_21)
             javaParameters = true
         }
     }
@@ -49,7 +44,7 @@ tasks.named("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
     mergeServiceFiles()
 }
 
-val javalinVersion = "6.5.0"
+val javalinVersion = "7.2.3"
 val micrometerVersion = "1.14.5"
 val jacksonVersion = "2.18.3"
 val tokenSupportVersion = "5.0.5"
@@ -59,6 +54,7 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("io.javalin:javalin:$javalinVersion")
     implementation("io.javalin:javalin-micrometer:$javalinVersion")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.31.1")
     implementation("org.eclipse.jetty:jetty-util")
     implementation("io.micrometer:micrometer-core:$micrometerVersion")
     implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")

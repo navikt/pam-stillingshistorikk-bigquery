@@ -1,7 +1,7 @@
 package no.nav.arbeidsplassen.stillingshistorikk.api
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.javalin.Javalin
+import io.javalin.config.JavalinConfig
 import io.javalin.http.Context
 import io.javalin.http.HttpStatus
 import no.nav.arbeidsplassen.stillingshistorikk.BigQueryService
@@ -16,8 +16,8 @@ class AdHistoryContoller(
         private val LOG = LoggerFactory.getLogger(AdHistoryContoller::class.java)
     }
 
-    fun setupRoutes(javalin: Javalin) {
-        javalin.get("/api/v1/ads/history/{uuid}", { hentStillingsHistorikk(it) }, Rolle.UNPROTECTED)
+    fun setupRoutes(config: JavalinConfig) {
+        config.routes.get("/api/v1/ads/history/{uuid}", { hentStillingsHistorikk(it) }, Rolle.UNPROTECTED)
     }
 
     private fun hentStillingsHistorikk(ctx: Context) {
