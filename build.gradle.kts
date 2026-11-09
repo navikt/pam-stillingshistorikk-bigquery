@@ -54,12 +54,12 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("io.javalin:javalin:$javalinVersion")
     implementation("io.javalin:javalin-micrometer:$javalinVersion")
-    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.33.0")
+    implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-api:2.33.1")
     implementation("io.micrometer:micrometer-core:$micrometerVersion")
     implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
     implementation("io.prometheus:simpleclient_common:0.16.0")
 
-    api(platform("com.google.cloud:libraries-bom:26.90.0"))
+    api(platform("com.google.cloud:libraries-bom:26.91.0"))
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
 
@@ -75,7 +75,7 @@ dependencies {
     implementation("com.papertrailapp:logback-syslog4j:1.0.0")
     implementation("org.codehaus.janino:janino:3.1.12")
     testImplementation(kotlin("test"))
-    testImplementation("no.nav.security:mock-oauth2-server:6.1.3")
+    testImplementation("no.nav.security:mock-oauth2-server:6.1.4")
     testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
     testImplementation("org.testcontainers:gcloud:$testContainersVersion")
     testImplementation("org.testcontainers:kafka:$testContainersVersion")
