@@ -46,7 +46,7 @@ tasks.named("shadowJar", com.github.jengelman.gradle.plugins.shadow.tasks.Shadow
 
 val javalinVersion = "7.2.4"
 val micrometerVersion = "1.17.2"
-val jacksonVersion = "2.22.4"
+val jacksonVersion = "2.23.0"
 val tokenSupportVersion = "6.0.13"
 val testContainersVersion = "1.21.4"
 
@@ -59,7 +59,7 @@ dependencies {
     implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
     implementation("io.prometheus:simpleclient_common:0.16.0")
 
-    api(platform("com.google.cloud:libraries-bom:26.91.0"))
+    api(platform("com.google.cloud:libraries-bom:26.93.0"))
     implementation("com.google.cloud:google-cloud-bigquery")
     implementation("com.google.cloud:google-cloud-bigquerystorage")
 
@@ -80,5 +80,5 @@ dependencies {
     testImplementation("org.testcontainers:gcloud:$testContainersVersion")
     testImplementation("org.testcontainers:kafka:$testContainersVersion")
     testImplementation("org.assertj:assertj-core:3.27.7")
-    testImplementation("io.mockk:mockk:1.14.11")
+    testImplementation("io.mockk:mockk:1.14.12")
 }
